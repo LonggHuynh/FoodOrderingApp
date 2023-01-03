@@ -2,7 +2,7 @@ import React from 'react'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import MenuIcon from '@mui/icons-material/Menu';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { app } from "../firebase.config"
+import { app } from "../config/firebase.config"
 import { useStateValue } from '../context/StateProvider';
 
 import { useState } from 'react';
@@ -14,15 +14,13 @@ const Navbar = () => {
 
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider()
+
+
     const login = async () => {
-        if (!user) {
-            const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider)
-            const action = { type: actionType.SET_USER, payload: providerData[0] }
-            dispatch(action)
-
-            localStorage.setItem('user', JSON.stringify(providerData[0]))
-
-        }
+        const { user } = await signInWithPopup(firebaseAuth, provider)
+        const action = { type: actionType.SET_USER, payload: user }
+        dispatch(action)
+        localStorage.setItem('user', JSON.stringify(user))
     }
 
 
@@ -31,7 +29,6 @@ const Navbar = () => {
         window.location.reload()
     }
 
-    // login()
     return (
         <div className='mb-25 z-50 h-20 sticky top-0 bg-primary text-primaryOpposite flex px-10   justify-between'>
 

@@ -1,7 +1,10 @@
 
 
-const user = null
-const cart = localStorage.getItem("cart")
+const user = JSON.parse(localStorage.getItem('user'))
+const cart = JSON.parse(localStorage.getItem("cart"))
+
+
+console.log(user)
 
 
 
