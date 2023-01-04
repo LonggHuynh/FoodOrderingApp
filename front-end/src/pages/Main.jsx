@@ -3,8 +3,21 @@ import RestaurantCard from '../components/RestaurantCard'
 import SearchIcon from '@mui/icons-material/Search';
 import { Switch } from '@mui/material';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom'
+import url from '../config/api'
 const Main = () => {
     const [isDeliveryFree, setIsDeliveryFree] = useState(false)
+    const [restaurants, setRestaurants] = useState([])
+
+
+    useEffect(() => {
+
+        fetch(url('/restaurants'))
+            .then(response => response.json())
+            .then(data => setRestaurants(data.data))
+    }, [])
+
 
     return (
         <div className='mainContainer flex'>
@@ -14,13 +27,13 @@ const Main = () => {
 
 
                 <div className='filterItem'>
-                    <p className='text-2xl mb-3 font-semibold'>Free     Delivery</p>
+                    <p className='text-2xl mb-3 font-semibold'>Free Delivery</p>
                     <Switch
                         checked={isDeliveryFree}
                         onChange={() => setIsDeliveryFree(prev => !prev)}
                         inputProps={{ 'aria-label': 'controlled' }}
                     />
-                </div>  
+                </div>
 
                 <div className='filterItem'>
                     <p className='text-2xl mb-3 font-semibold'>Min Order</p>
@@ -46,7 +59,7 @@ const Main = () => {
                     {
 
                         [...Array(5).keys()].map((_, ind) => {
-                            
+
                             return (
                                 <div className='inputItem mb-2' key={ind}>
                                     <input type='radio' id={`start${ind}`} value={ind + 1} name='price' />
@@ -87,19 +100,15 @@ const Main = () => {
                     <p className='text-xl'>752 restaurants</p>
                 </div>
                 <div className="cardGrid grid grid-cols-2 gap-12 mt-5">
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
-                    <RestaurantCard />
+                    {restaurants.map(item =>
+                        <Link to={{ pathname:`/restaurants/${item.id}`, state:{restaurant:item} }}>
+                            <RestaurantCard key={item.id} restaurant={item} />
+                        </Link>
+                    )}
+
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

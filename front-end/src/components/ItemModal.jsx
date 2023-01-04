@@ -1,31 +1,47 @@
 import React from 'react'
-import CloseIcon from '@mui/icons-material/Close';
+import {  useDispatch } from "react-redux"
+import { actionType } from '../redux'
 
-const ItemModal = ({ selectedItem }) => {
+const ItemModal = ({ dish, close }) => {
+
+    const dispatch = useDispatch()
+
     return (
         <>{
-            selectedItem && (
-                <div className='fixed w-screen h-screen flex items-center justify-center z-[1300] left-0 top-0 bg-primary bg-opacity-50 py-8'>
-                    <div className='relative w-[545px] bg-red-500 h-full mt-8 mb-8 flex flex-col'>
 
-                        <div className="absolute right-3 top-4">
-                            <CloseIcon fontSize="large" />
-                        </div>
-                        <div className='flex-1'>
-                            <div className="imgContainer h-300 bg-red-700">
+            <div className='selectedItem fixed w-screen h-screen flex items-center justify-center z-[1300] left-0 top-0 bg-primary bg-opacity-50 py-8' onClick={close}>
+                <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm overflow-hidden' onClick={e => e.stopPropagation()} >
 
-                            </div>
-                        </div>
-                        <div className='basis-36 bg-slate-300 grow-0 shrink-0 '></div>
+                    <div className="absolute right-3 top-4">
+                    </div>
+                    <div className="imgContainer h-[35%] bg-red-700">
+                        <img className='h-full w-full object-cover' src={dish.img} />
+                    </div>
 
 
+                    <div className='px-5 flex-1'>
+                        <p className='text-3xl font-semibold mt-10'>{dish.name}</p>
+                        <p className='text-lg mt-7'>{dish.description}</p>
                     </div>
 
 
 
 
+
+
+                    <button className='h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={() => dispatch({ type: actionType.ADD_TO_CART, payload: { ...dish, quantity: 1 } })}>
+                        Add to cart
+                    </button>
+
+
+
                 </div>
-            )
+
+
+
+
+            </div>
+
         }
         </>
     )

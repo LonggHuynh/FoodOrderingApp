@@ -1,19 +1,19 @@
 import React from 'react'
 
-const RestaurantCard = ({ deliveryTime, deliveryFee, rating }) => {
+const RestaurantCard = ({ restaurant }) => {
     return (
         <div className='flex w-[450px] h-[150px] bg-primaryOpposite hover:bg-secondaryOpposite hover:border hover:drop-shadow-md'>
-            
+
             <div className='flex-[5] py-3 flex  flex-col'>
                 <div>
-                    <p className='text-lg'>Burger King</p>
-                    <p className='text-xs'>$4.99 delivery</p>
+                    <p className='text-lg'>{restaurant.name}</p>
+                    <p className='text-xs'>{restaurant.delivery_cost>0?restaurant.delivery_cost: `Free delivery`}</p>
                 </div>
-                <p className='mt-auto'>4.2</p>
+                <p className='mt-auto'>{restaurant.rating|| `No rating available`} </p>
             </div>
 
             <div className='image flex-[3]'>
-                <div className='w-full h-full bg-red-400' ></div>
+                <img src={restaurant.logo_url} className='w-full h-full ' />
 
             </div>
         </div>

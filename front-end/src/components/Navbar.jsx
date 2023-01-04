@@ -3,29 +3,46 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import MenuIcon from '@mui/icons-material/Menu';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../config/firebase.config"
-import { useStateValue } from '../context/StateProvider';
-
+import { useSelector, useDispatch } from "react-redux"
 import { useState } from 'react';
-import { actionType } from '../context/reducer';
+import { actionType } from '../redux/';
+import url from '../config/api'
+
 const Navbar = () => {
     const [isMenu, setIsMenu] = useState(false)
-    const [state, dispatch] = useStateValue()
-    const user = state.user
-
+    const currentUser = useSelector(state => state.user)
+    const dispatch = useDispatch()
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider()
 
 
+
+    const signup = async () => {
+
+    }
     const login = async () => {
         const { user } = await signInWithPopup(firebaseAuth, provider)
-        const action = { type: actionType.SET_USER, payload: user }
+        const { uid, email, displayName, accessToken } = user
+        
+        const response  = await fetch(url('/users'), {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).catch(err=>console.log(err))
+        const data = await response.json().catch(err=>console.log(err))
+        console.log(data)
+
+
+        const action = { type: actionType.SET_USER, payload: { uid, email, displayName, accessToken } }
         dispatch(action)
-        localStorage.setItem('user', JSON.stringify(user))
     }
 
 
+
+
     const logout = () => {
-        localStorage.removeItem('user')
+        localStorage.clear()
         window.location.reload()
     }
 
@@ -49,13 +66,17 @@ const Navbar = () => {
                         (
                             <div className="menuBar absolute top-14 right-0 border rounded-lg w-40 right flex flex-col bg-primaryOpposite text-primary drop-shadow-lg">
                                 {
-                                    user ? <>
-                                        <div className="p-4 border-1 border-b">{user.displayName}</div>
-                                        <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
-                                        <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Sign out</div>
-                                    </>
+                                    currentUser ?
+                                        <>
+                                            <div className="p-4 border-1 border-b">{currentUser.displayName}</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Sign out</div>
+                                        </>
                                         :
-                                        <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Log in</div>
+                                        <>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Log in</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={signup}>Log in</div>
+                                        </>
                                 }
 
                             </div>

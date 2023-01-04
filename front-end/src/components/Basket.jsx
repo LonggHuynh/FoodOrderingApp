@@ -1,6 +1,12 @@
 import React from 'react'
 import CartItem from '../components/CartItem'
+import { useSelector } from 'react-redux'
+
 const Basket = ({ editable }) => {
+
+    const items = useSelector(state =>state.cart.items)
+
+
     // Requires flex parent
     return (
 
@@ -8,10 +14,13 @@ const Basket = ({ editable }) => {
 
             <p className='self-center text-3xl  '>Basket</p>
             <div className="itemsContainer mt-10 flex flex-col gap-5">
-                <CartItem editable={editable} />
-                <CartItem editable={editable}/>
-                <CartItem editable={editable}/>
-                <CartItem editable={editable}/>
+                {items.map(item => <CartItem key={item.id} editable={editable} dish={item} />)}
+
+            </div>
+
+            <div className='flex mt-auto  text-sm'>
+                <span >Min order </span>
+                <span className='ml-auto'>$10</span>
             </div>
 
             <div className='flex mt-auto  text-sm'>
