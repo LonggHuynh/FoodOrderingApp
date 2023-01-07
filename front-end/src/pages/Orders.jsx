@@ -1,52 +1,62 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
+import Basket from '../components/Basket'
+import OrderCard from '../components/OrderCard'
+import CartInfo from '../components/CartInfo'
+import "./Checkout.css"
+import url from '../config/api'
 
-import Category from '../components/Category'
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import Basket from '../components/Basket';
-import ItemModal from '../components/ItemModal';
+import { useSelector } from 'react-redux'
 const Orders = () => {
 
-  const rating = 4.5
-  return (
-    <>
-      <ItemModal />
 
-      <div className='flex'>
 
-        <div className="mainPage flex-1 basis-0 relative">
+    const accessToken = useSelector(state => state.user?.accessToken)
 
-          <div className='backGround h-[400px] bg-primaryOpposite drop-shadow-lg'>
-            {/* Image */}
-            <div className="img bg-red-400 h-[60%] drop-shadow-md"></div>
-            <div className="details px-10 py-5 flex flex-col  h-[40%]" >
-              <p className='text-4xl font-semibold'>Douwe Egberts Cafe</p>
+    const [selectedOrder, setSelectedOrder] = useState({ items: [] })
+    const [price, setPrice] = useState(0)
 
-              <div className='flex mt-auto'>
+
+    console.log(selectedOrder)
+    const [orders, setOrders] = useState([])
+    useEffect(() => {
+
+        fetch(url('/orders'), {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${accessToken}`
+            },
+        })
+            .then(response => response.json())
+            .then(data => setOrders(data))
+
+
+    }, [])
+
+
+    useEffect(() => {
+        let total = 0
+        selectedOrder.items.forEach(item => total += item.price)
+        setPrice(total)
+    }, [selectedOrder])
+
+
+    console.log(orders)
+
+
+    return (
+        <div className='checkout flex w-full'>
+            <div className=' flex-1 px-24 py-32  flex flex-col gap-10'>
+                <p>Order History</p>
 
                 {
-                  [...Array(5).keys()].map(val => val + 0.5 <= rating ? <StarIcon /> : <StarBorderIcon />)
+                    orders.map(order => <OrderCard key={order.id} order={order} selectOrder={() => setSelectedOrder(order)} />)
                 }
-                <span className='ml-1'> (500)</span>
 
-              </div>
-              <p className='text'>Min. $2.5  <span className='ml-3'><DeliveryDiningIcon />.</span> $2.5</p>
             </div>
-
-          </div>
-
-          <div className="dishes px-10 py-20">
-            <Category />
-            <Category />
-            <Category />
-            <Category />
-          </div>
+            <CartInfo items={selectedOrder.items} restaurant={selectedOrder.restaurant} price={price} />
         </div>
-        <Basket editable={true} />
-      </div>
-    </>
-  )
+    )
 }
 
 export default Orders

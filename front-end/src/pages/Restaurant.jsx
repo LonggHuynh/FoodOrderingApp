@@ -13,7 +13,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Restaurant = () => {
 
   const { id } = useParams()
-  const rating = 4.5
   const [restaurant, setRestaurant] = useState(null)
   const [selectedDish, setSelectedDish] = useState(null)
 
@@ -56,7 +55,7 @@ const Restaurant = () => {
     restaurant ?
 
       <>
-        {selectedDish && <ItemModal dish={selectedDish} close= {()=> setSelectedDish(null)}/>}
+        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant} close={() => setSelectedDish(null)} />}
 
         <div className='flex'>
 
@@ -64,7 +63,7 @@ const Restaurant = () => {
 
             <div className='backGround h-[400px] bg-primaryOpposite drop-shadow-lg'>
               <div className="img bg-red-400 h-[60%] drop-shadow-md">
-                <img src={restaurant.background_url} className='w-full h-full object-cover'/>
+                <img src={restaurant.background_url} className='w-full h-full object-cover' />
               </div>
               <div className="details px-10 py-5 flex flex-col  h-[40%]" >
                 <p className='text-4xl font-semibold'>{restaurant.name}</p>
@@ -94,7 +93,7 @@ const Restaurant = () => {
 
               {
                 categoriedDishes ?
-                  categoriedDishes.map(item => <Category dishes={item} selectItem = {(item)=> setSelectedDish(item)}/>)
+                  categoriedDishes.map(item => <Category dishes={item} selectItem={(item) => setSelectedDish(item)} />)
                   :
                   <div className='flex h-full  items-center justify-center'>
                     <ClipLoader />

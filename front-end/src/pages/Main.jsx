@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom'
 import url from '../config/api'
 const Main = () => {
     const [isDeliveryFree, setIsDeliveryFree] = useState(false)
+    const [minOrder, setMinOrder] = useState(0)
+    const [searchTerm, setSearchTerm] = useState('')
+    
+
+
     const [restaurants, setRestaurants] = useState([])
 
 
@@ -17,6 +22,8 @@ const Main = () => {
             .then(response => response.json())
             .then(data => setRestaurants(data.data))
     }, [])
+
+
 
 
     return (
@@ -54,24 +61,7 @@ const Main = () => {
                 </div>
 
 
-                <div className='filterItem'>
-                    <p className='text-2xl mb-3 font-semibold'>Rating</p>
-                    {
 
-                        [...Array(5).keys()].map((_, ind) => {
-
-                            return (
-                                <div className='inputItem mb-2' key={ind}>
-                                    <input type='radio' id={`start${ind}`} value={ind + 1} name='price' />
-                                    <label className='ml-3' htmlFor={`start${ind}`} > {ind + 1}</label>
-                                </div>
-                            )
-                        }
-
-                        )
-                    }
-
-                </div>
             </div>
 
 
@@ -101,13 +91,14 @@ const Main = () => {
                 </div>
                 <div className="cardGrid grid grid-cols-2 gap-12 mt-5">
                     {restaurants.map(item =>
-                        <Link to={{ pathname:`/restaurants/${item.id}`, state:{restaurant:item} }}>
+                        <Link to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
                             <RestaurantCard key={item.id} restaurant={item} />
                         </Link>
                     )}
 
                 </div>
             </div>
+
         </div >
     )
 }

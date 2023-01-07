@@ -1,5 +1,6 @@
 const admin = require('../firebase.config');
 const auth = async (req, res, next) => {
+
     const token = req.headers.authorization.split(' ')[1];
     try {
         const user = await admin.auth().verifyIdToken(token);
@@ -7,6 +8,7 @@ const auth = async (req, res, next) => {
         next()
     }
     catch (err) {
+
         next(err)
     }
 }

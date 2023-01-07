@@ -5,15 +5,19 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../config/firebase.config"
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from 'react';
+import { Link } from 'react-router-dom'
 import { actionType } from '../redux/';
 import url from '../config/api'
 
 const Navbar = () => {
+
     const [isMenu, setIsMenu] = useState(false)
     const currentUser = useSelector(state => state.user)
     const dispatch = useDispatch()
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider()
+    const { restaurant, price } = useSelector(state => state.cart)
+
 
 
 
@@ -23,14 +27,14 @@ const Navbar = () => {
     const login = async () => {
         const { user } = await signInWithPopup(firebaseAuth, provider)
         const { uid, email, displayName, accessToken } = user
-        
-        const response  = await fetch(url('/users'), {
+
+        const response = await fetch(url('/users'), {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).catch(err=>console.log(err))
-        const data = await response.json().catch(err=>console.log(err))
+        }).catch(err => console.log(err))
+        const data = await response.json().catch(err => console.log(err))
         console.log(data)
 
 
@@ -51,10 +55,10 @@ const Navbar = () => {
 
             <div className="logo flex items-center text-3xl font-bold">Logo</div>
             <div className="cartAndMenu flex items-center gap-4">
-                <div className="cart h-12 p-4 flex justify-between items-center border rounded-lg w-32">
+                <Link to={restaurant ? `/restaurants/${restaurant.id}` : ''} className="cart h-12 p-4 flex justify-between items-center border rounded-lg w-32" onClick={restaurant || ((event) => event.preventDefault())}>
                     <span><ShoppingBasketIcon /></span>
-                    <span>$20</span>
-                </div>
+                    <span>${price}</span>
+                </Link>
 
                 <div className="menu relative">
                     <div className="menuButton  h-12 p-4 flex items-center border w-12 rounded-lg justify-center cursor-pointer" onClick={() => setIsMenu(prev => !prev)}>
@@ -88,7 +92,7 @@ const Navbar = () => {
                 </div>
 
             </div>
-        </div>
+        </div >
     )
 }
 

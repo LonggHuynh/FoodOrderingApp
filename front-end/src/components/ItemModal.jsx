@@ -1,10 +1,19 @@
 import React from 'react'
-import {  useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { actionType } from '../redux'
 
-const ItemModal = ({ dish, close }) => {
+const ItemModal = ({ dish, close, restaurant }) => {
+
 
     const dispatch = useDispatch()
+    const addToCartActionCreator = () => {
+
+        return (dispatch) => {
+            dispatch({ type: actionType.ADD_TO_CART, payload: { ...dish, quantity: 1 } })
+            dispatch({ type: actionType.SET_RESTAURANT, payload: restaurant })
+
+        }
+    }
 
     return (
         <>{
@@ -21,7 +30,7 @@ const ItemModal = ({ dish, close }) => {
 
                     <div className='px-5 flex-1'>
                         <p className='text-3xl font-semibold mt-10'>{dish.name}</p>
-                        <p className='text-lg mt-7'>{dish.description}</p>
+                        <p className='text-md mt-7'>{dish.description}</p>
                     </div>
 
 
@@ -29,7 +38,7 @@ const ItemModal = ({ dish, close }) => {
 
 
 
-                    <button className='h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={() => dispatch({ type: actionType.ADD_TO_CART, payload: { ...dish, quantity: 1 } })}>
+                    <button className='h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={() => dispatch(addToCartActionCreator())}>
                         Add to cart
                     </button>
 
