@@ -9,15 +9,24 @@ import ItemModal from '../components/ItemModal';
 import url from '../config/api'
 import { useParams } from 'react-router-dom'
 import ClipLoader from "react-spinners/ClipLoader";
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import EditRestaurantCard from '../components/EditRestaurantCard';
+import EditDish from '../components/EditDish'
+
 
 const Restaurant = () => {
 
   const { id } = useParams()
   const [restaurant, setRestaurant] = useState(null)
   const [selectedDish, setSelectedDish] = useState(null)
+  const [editRestaurant, setEditRestaurant] = useState(false)
+  const [addDish, setAddDish] = useState(false)
+  const [categories, setCategories] = useState([])
 
 
-  console.log(selectedDish)
+
+
 
   //classified by tag
   const [categoriedDishes, setCategoriedDishes] = useState()
@@ -32,18 +41,24 @@ const Restaurant = () => {
   useEffect(() => {
 
     if (restaurant) {
-      const { dishes } = restaurant
-      const categories = new Map()
+      let { dishes } = restaurant
+      const categoriesMap = new Map()
       const others = []
+
+
+      dishes = dishes.filter(item => item);
+
+
       dishes.forEach(dish => {
-        if (!dish.catagory) others.push(dish)
+        if (!dish.category) others.push(dish)
         else {
-          if (!categories[dish.catagory]) categories[dish.catagory] = []
-          categories[dish.catagory].push(dish)
+          if (!categoriesMap[dish.catagory]) categoriesMap[dish.catagory] = []
+          categoriesMap[dish.catagory].push(dish)
         }
       })
 
-      const res = Array.from(categories.values())
+      const res = Array.from(categoriesMap.values())
+      setCategories(Array.from(categoriesMap.keys()))
       if (others.length > 0) res.push(others)
       setCategoriedDishes(res)
     }
@@ -55,8 +70,9 @@ const Restaurant = () => {
     restaurant ?
 
       <>
-        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant} close={() => setSelectedDish(null)} />}
-
+        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant} categories={categories} close={() => setSelectedDish(null)} />}
+        {editRestaurant && <EditRestaurantCard action='Edit' restaurant={restaurant} closeTab={() => setEditRestaurant(false)} />}
+        {addDish && <EditDish action='Add dish' closeTab={() => setAddDish(false)} />}
         <div className='flex'>
 
           <div className="mainPage flex-1 basis-0 relative">
@@ -66,7 +82,14 @@ const Restaurant = () => {
                 <img src={restaurant.background_url} className='w-full h-full object-cover' />
               </div>
               <div className="details px-10 py-5 flex flex-col  h-[40%]" >
-                <p className='text-4xl font-semibold'>{restaurant.name}</p>
+                <div className='flex items-center'>
+                  <p className='text-4xl font-semibold'>{restaurant.name}</p>
+                  <div className='ml-auto cursor-pointer' >
+                    <EditIcon onClick={() => setEditRestaurant(true)} />
+                    <AddIcon onClick={() => setAddDish(true)} />
+
+                  </div>
+                </div>
 
                 <div className='flex mt-auto'>
 

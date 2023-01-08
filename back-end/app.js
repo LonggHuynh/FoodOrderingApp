@@ -3,11 +3,13 @@ const cors = require('cors')
 const app = express()
 const orders = require('./routes/Order')
 const users = require('./routes/User')
+const dishes = require('./routes/Dish')
 const restaurants = require('./routes/Restaurant')
 const errorHandler = require('./middlewares/errorHandler')
+const bodyParser = require('body-parser');
 
 
-
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors({
     origin:"*",
 }))
@@ -18,6 +20,7 @@ app.use(express.json());
 app.use('/api/v1/orders', orders);
 app.use('/api/v1/users', users);
 app.use('/api/v1/restaurants', restaurants);
+app.use('/api/v1/dishes', dishes);
 
 
 

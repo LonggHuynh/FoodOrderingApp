@@ -8,8 +8,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { actionType } from '../redux/';
 import url from '../config/api'
-
+import EditRestaurantCard from './EditRestaurantCard';
 const Navbar = () => {
+
+
+    const [editRestaurant, setEditRestaurant] = useState(false)
 
     const [isMenu, setIsMenu] = useState(false)
     const currentUser = useSelector(state => state.user)
@@ -46,12 +49,15 @@ const Navbar = () => {
 
 
     const logout = () => {
-        localStorage.clear()
+        sessionStorage.clear()
         window.location.reload()
     }
 
     return (
-        <div className='mb-25 z-50 h-20 sticky top-0 bg-primary text-primaryOpposite flex px-10   justify-between'>
+
+        <div className='mb-25 z-[1] h-20 sticky top-0 bg-primary text-primaryOpposite flex px-10   justify-between'>
+
+            {editRestaurant && <EditRestaurantCard action='Create' closeTab={()=> setEditRestaurant(false)} />}
 
             <div className="logo flex items-center text-3xl font-bold">Logo</div>
             <div className="cartAndMenu flex items-center gap-4">
@@ -74,12 +80,13 @@ const Navbar = () => {
                                         <>
                                             <div className="p-4 border-1 border-b">{currentUser.displayName}</div>
                                             <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
-                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Sign out</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={() => setEditRestaurant(true)}>Create restaurant </div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Logout</div>
                                         </>
                                         :
                                         <>
-                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Log in</div>
-                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={signup}>Log in</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Login</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={signup}>Signup</div>
                                         </>
                                 }
 

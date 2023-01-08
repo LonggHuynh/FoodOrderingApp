@@ -1,11 +1,17 @@
 import React from 'react'
+import { useState } from 'react';
 import { useDispatch } from "react-redux"
 import { actionType } from '../redux'
-
-const ItemModal = ({ dish, close, restaurant }) => {
+import EditIcon from '@mui/icons-material/Edit';
+import EditDish from './EditDish';
+import CloseIcon from '@mui/icons-material/Close';
+const ItemModal = ({ dish, close, restaurant, categories }) => {
 
 
     const dispatch = useDispatch()
+
+
+    const [editDish, setEditDish] = useState(false)
     const addToCartActionCreator = () => {
 
         return (dispatch) => {
@@ -16,12 +22,14 @@ const ItemModal = ({ dish, close, restaurant }) => {
     }
 
     return (
-        <>{
+        <>
+            {editDish && <EditDish action='Edit' dish={dish} categories={categories} closeTab={() => setEditDish(false)} />}
+            <div className='selectedItem fixed w-screen h-screen flex items-center justify-center z-[2] left-0 top-0 bg-primary bg-opacity-50 py-8' >
+                <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm overflow-hidden' >
 
-            <div className='selectedItem fixed w-screen h-screen flex items-center justify-center z-[1300] left-0 top-0 bg-primary bg-opacity-50 py-8' onClick={close}>
-                <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm overflow-hidden' onClick={e => e.stopPropagation()} >
-
-                    <div className="absolute right-3 top-4">
+                    <div className="absolute right-3 top-4 flex gap-3">
+                        <EditIcon onClick={() => setEditDish(true)} />
+                        <CloseIcon onClick={close} />
                     </div>
                     <div className="imgContainer h-[35%] bg-red-700">
                         <img className='h-full w-full object-cover' src={dish.img} />
@@ -51,7 +59,7 @@ const ItemModal = ({ dish, close, restaurant }) => {
 
             </div>
 
-        }
+
         </>
     )
 }
