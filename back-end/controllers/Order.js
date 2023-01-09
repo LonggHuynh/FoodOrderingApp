@@ -36,7 +36,7 @@ const addNewOrder = async (req, res, next) => {
 
     const { info, cart } = req.body
 
-    const { uid } = req.user
+    const uid = req.user?.uid
 
     const amountPaid = cart.amountPaid
     const items = cart.items
@@ -46,11 +46,11 @@ const addNewOrder = async (req, res, next) => {
         await db.query('BEGIN')
 
 
-        const statement = `SELECT dish.id, dish.price, restaurant.delivery_cost 
+        const statement = `SELECT dish.id, dish.price, restaurant.delivery_cost, restaurant.min_order 
                     FROM dish 
                     LEFT JOIN restaurant ON dish.restaurant_id = restaurant.id
                     WHERE restaurant.id=$1 
-                    AND dish.id = ANY($2::int[])`
+                    AND dish.id = ANY($2::uuid[])`
 
 
         const { rows } = await db.query(statement, [restaurantId, items.map(item => item.id)])
@@ -77,10 +77,18 @@ const addNewOrder = async (req, res, next) => {
 
 
 
+
         //Dupplcate item and/or items not from the same restaurant or inconsitent amount paid
         if (items.length > priceMap.length || amountPaid != total || rows.length == 0) {
             await db.query('ABORT')
             res.status(400).json({ msg: 'There is some thing wrong with your order' })
+            next()
+        }
+
+
+        if (total - Number(rows[0].delivery_cost)  < rows[0].min_order) {
+            await db.query('ABORT')
+            res.status(400).json({ msg: `The minimum order price hasn't been reached yet.` })
             next()
         }
 

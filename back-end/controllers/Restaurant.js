@@ -64,13 +64,12 @@ const editRestaurant = async (req, res, next) => {
 
 const getRestaurant = async (req, res, next) => {
     try {
-        const statement = `SELECT restaurant.* ,json_agg(to_jsonb(dish.*)) as dishes,  avg(app_order.rating) as rating
-                            FROM restaurant
-                            LEFT JOIN dish on restaurant.id = dish.restaurant_id
-                            LEFT JOIN app_order on restaurant.id = app_order.restaurant_id
-                            WHERE restaurant.id = $1
-                            GROUP BY restaurant.id
-                            `
+        const statement = 
+        `SELECT restaurant.*,
+            (SELECT json_agg(to_jsonb(dish)) FROM dish WHERE dish.restaurant_id = restaurant.id) as dishes,
+            (SELECT avg(app_order.rating) FROM app_order WHERE app_order.restaurant_id = restaurant.id) as rating
+        FROM restaurant
+        WHERE restaurant.id = $1;`
 
         const { id } = req.params
         const { rows } = await db.query(statement, [id])

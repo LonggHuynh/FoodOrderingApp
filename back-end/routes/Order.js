@@ -11,6 +11,7 @@ const {
 
 
 router.route('/').post(auth, addNewOrder).get(auth, getOrdersOfUser)
+router.route('/no-auth').post(addNewOrder)
 router.route('/:id').put(auth, rateOrder)
 
 

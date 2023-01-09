@@ -5,9 +5,16 @@ const db = require('../db')
 const validateUser = async (req, res, next) => {
     const { uid } = req.user
     try {
-        const { rows } = await db.query('SELECT id from app_user WHERE id = $1', [uid])
+        const { rows } = await db.query(
+            `SELECT app_user.id, restaurant.id as restaurant_id from app_user 
+            LEFT JOIN restaurant on restaurant.id = app_user.id
+            WHERE app_user.id = $1
+            `
+            , [uid])
+
+        console.log({ msg: "Logged in", data: rows[0] })
         if (rows.length)
-            res.status(200).json({ msg: "Logged in" })
+            res.status(200).json({ msg: "Logged in", data: rows[0] })
         else
             res.status(403).json({ msg: "User not found" })
     } catch (err) {
@@ -23,7 +30,8 @@ const addUser = async (req, res, next) => {
 
     try {
         await db.query(statement, [uid])
-        next()
+        res.status(201).json({ msg: "User registered" })
+
     }
     catch (err) {
         if (err.code === "23505")
