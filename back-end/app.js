@@ -22,10 +22,11 @@ app.use('/api/v1/users', users);
 app.use('/api/v1/restaurants', restaurants);
 app.use('/api/v1/dishes', dishes);
 
-
-
-
 app.use(errorHandler);
+
+
+
+
 const port = process.env.PORT || 5000;
 const start = async () => {
     try {
@@ -35,6 +36,5 @@ const start = async () => {
     }
 }
 
-app.use(errorHandler);
 
 start()
