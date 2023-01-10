@@ -7,7 +7,7 @@ const dishes = require('./routes/Dish')
 const restaurants = require('./routes/Restaurant')
 const errorHandler = require('./middlewares/errorHandler')
 const bodyParser = require('body-parser');
-
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors({
