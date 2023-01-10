@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 import ImageInput from './ImageInput';
 import CloseIcon from '@mui/icons-material/Close';
 import url from '../config/api';
-import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
 const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
