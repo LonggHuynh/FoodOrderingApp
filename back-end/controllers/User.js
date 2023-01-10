@@ -12,7 +12,6 @@ const validateUser = async (req, res, next) => {
             `
             , [uid])
 
-        console.log({ msg: "Logged in", data: rows[0] })
         if (rows.length)
             res.status(200).json({ msg: "Logged in", data: rows[0] })
         else

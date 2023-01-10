@@ -38,7 +38,6 @@ const editDish = async (req, res, next) => {
         const { rowCount } = await db.query(statement, [dish.name, dish.description, dish.img, dish.price, dish.category, dish.id, uid])
         if (rowCount == 0) {
 
-            console.log(uid)
             res.status(400).json({ msg: 'You are not the owner of the dish' })
         }
         else {

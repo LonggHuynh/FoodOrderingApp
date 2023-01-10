@@ -12,6 +12,7 @@ const getOrdersOfUser = async (req, res, next) => {
                  JOIN restaurant on app_order.restaurant_id = restaurant.id
         WHERE app_order.uid = $1
         GROUP BY app_order.id, restaurant.id
+        ORDER BY app_order.date
         `
 
     try {
@@ -19,7 +20,6 @@ const getOrdersOfUser = async (req, res, next) => {
 
         res.status(200).json(rows)
     } catch (err) {
-        console.log(err)
         next(err)
 
     }
@@ -101,7 +101,6 @@ const addNewOrder = async (req, res, next) => {
         await db.query(insertOrderStatement, [orderId, uid, restaurantId, info.name, info.email, `${info.address}, ${info.city}, ${info.postcode}`])
 
         const orderedItems = items.map(item => [orderId, item.quantity, item.id])
-        console.log(info)
 
 
 
@@ -113,7 +112,6 @@ const addNewOrder = async (req, res, next) => {
 
 
 
-        console.log(insertItemsStatement)
         await db.query('COMMIT')
         res.status(201).json({ msg: 'Ordered added' })
 
