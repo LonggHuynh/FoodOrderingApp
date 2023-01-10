@@ -1,17 +1,28 @@
 import React from 'react'
 import { useState } from 'react';
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { actionType } from '../redux'
 import EditIcon from '@mui/icons-material/Edit';
 import EditDish from './EditDish';
 import CloseIcon from '@mui/icons-material/Close';
-const ItemModal = ({ dish, close, restaurant, categories }) => {
+import { toast } from 'react-toastify';
+const ItemModal = ({ dish, close, restaurant }) => {
 
 
     const dispatch = useDispatch()
+    const cartRestaurant = useSelector(state => state.cart.restaurant)
+    const cartItems = useSelector(state => state.cart.items)
 
-
+    const uid = useSelector(state => state.user?.uid)
     const [editDish, setEditDish] = useState(false)
+
+    const handleAddToCart = () => {
+        if (cartRestaurant && cartRestaurant?.id !== restaurant.id && cartItems.length > 0)
+            toast.error('The items are not from the same restaurant. Please clear your cart before adding this items in')
+        else
+            dispatch(addToCartActionCreator())
+
+    }
     const addToCartActionCreator = () => {
 
         return (dispatch) => {
@@ -21,15 +32,16 @@ const ItemModal = ({ dish, close, restaurant, categories }) => {
         }
     }
 
+
     return (
         <>
-            {editDish && <EditDish action='Edit' dish={dish} categories={categories} closeTab={() => setEditDish(false)} />}
+            {editDish && <EditDish action='Edit' dish={dish} closeTab={() => setEditDish(false)} />}
             <div className='selectedItem fixed w-screen h-screen flex items-center justify-center z-[2] left-0 top-0 bg-primary bg-opacity-50 py-8' >
                 <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm overflow-hidden' >
 
                     <div className="absolute right-3 top-4 flex gap-3">
-                        <EditIcon onClick={() => setEditDish(true)} />
-                        <CloseIcon onClick={close} />
+                        {uid == restaurant.id && <EditIcon onClick={() => setEditDish(true)} className='cursor-pointer' />}
+                        <CloseIcon onClick={close} className='cursor-pointer' />
                     </div>
                     <div className="imgContainer h-[35%] bg-red-700">
                         <img className='h-full w-full object-cover' src={dish.img} />
@@ -46,7 +58,7 @@ const ItemModal = ({ dish, close, restaurant, categories }) => {
 
 
 
-                    <button className='h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={() => dispatch(addToCartActionCreator())}>
+                    <button className='h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={handleAddToCart}>
                         Add to cart
                     </button>
 

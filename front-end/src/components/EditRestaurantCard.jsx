@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux'
 import ImageInput from './ImageInput';
 import CloseIcon from '@mui/icons-material/Close';
 import url from '../config/api';
-import { reload } from 'firebase/auth';
-
+import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
 
@@ -15,6 +15,7 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
     const [data, setData] = useState({ name: restaurant?.name || '', delivery_cost: restaurant?.delivery_cost || 0, min_order: restaurant?.min_order || 0 })
     const [background, setBackground] = useState(restaurant?.background_url)
     const [logo, setLogo] = useState(restaurant?.logo_url)
+
 
     const { accessToken } = useSelector(state => state.user)
 
@@ -33,12 +34,15 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
             },
             body: JSON.stringify({ ...data, background_url: background, logo_url: logo })
         })
-            .then(response => response.json())
-            .then(data => console.log(data))
+            .then(async (response) => {
+                const data = await response.json()
+                if (!response.ok) {
+                    throw new Error(data.msg)
+                }
 
-        window.location.reload()
+            }).then(() => window.location.reload())
+            .catch((error) => toast.error(error.message))
 
-        //Fetch!!
 
     }
 
@@ -72,8 +76,8 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
                                 <p>Logo</p>
                                 <ImageInput image={logo} setImage={setLogo} />
                             </div>
-                            <input type='number' placeholder='Delivery fee' onChange={handleChange} name='min_order' value={data.min_order} className='border-b focus:outline-none' />
-                            <input type='number' placeholder='Min order' onChange={handleChange} name='delivery_cost' value={data.delivery_cost} className='border-b focus:outline-none mb-10' />
+                            <input type='number' placeholder='Min order' onChange={handleChange} name='min_order' value={data.min_order} className='border-b focus:outline-none' />
+                            <input type='number' placeholder='Delivery fee' onChange={handleChange} name='delivery_cost' value={data.delivery_cost} className='border-b focus:outline-none mb-10' />
 
                         </form>
                     </div>

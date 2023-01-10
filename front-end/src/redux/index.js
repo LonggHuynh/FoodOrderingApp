@@ -35,7 +35,7 @@ const itemsReducer = (state = [], action) => {
     case actionType.CLEAR_CART:
       return []
     case actionType.ADD_TO_CART: {
-      let updatedState = [...state, { ...action.payload, quantity: 1 }]
+      let updatedState = [...state, { ...action.payload, img: null, quantity: 1 }]
       if (state.find(item => action.payload.id === item.id))
         updatedState = state.map(item => (item.id === action.payload.id) ? { ...item, quantity: item.quantity + 1 } : item)
       return updatedState;

@@ -14,7 +14,7 @@ const OrderCard = ({ order, selectOrder }) => {
                     <p className='text-2xl'>{order.restaurant.name}</p>
                     <p className=' text-sm mt-auto'>{(order.date).slice(0, 10)}</p>
                     <p className='text-sm'>{order.address}</p>
-                    <p className='text-lg'>$8.99</p>
+                    <p className=''>${order.price}</p>
                 </div>
 
                 <div className='ml-auto flex items-end'>

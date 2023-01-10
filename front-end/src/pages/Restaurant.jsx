@@ -13,6 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import EditRestaurantCard from '../components/EditRestaurantCard';
 import EditDish from '../components/EditDish'
+import { useSelector } from 'react-redux';
 
 
 const Restaurant = () => {
@@ -22,8 +23,9 @@ const Restaurant = () => {
   const [selectedDish, setSelectedDish] = useState(null)
   const [editRestaurant, setEditRestaurant] = useState(false)
   const [addDish, setAddDish] = useState(false)
-  const [categories, setCategories] = useState([])
 
+
+  const uid = useSelector(state => state.user?.uid)
 
 
 
@@ -38,10 +40,12 @@ const Restaurant = () => {
   }, [])
 
 
+
   useEffect(() => {
 
     if (restaurant) {
       let { dishes } = restaurant
+      dishes = dishes || []
       const categoriesMap = new Map()
       const others = []
 
@@ -49,19 +53,24 @@ const Restaurant = () => {
       dishes = dishes.filter(item => item);
 
 
+
+
       dishes.forEach(dish => {
-        if (!dish.category) others.push(dish)
-        else {
-          if (!categoriesMap[dish.catagory]) categoriesMap[dish.catagory] = []
-          categoriesMap[dish.catagory].push(dish)
-        }
+        if (!categoriesMap.get(dish.category))
+          categoriesMap.set(dish.category, [])
+        categoriesMap.get(dish.category).push(dish)
       })
 
-      const res = Array.from(categoriesMap.values())
-      setCategories(Array.from(categoriesMap.keys()))
+
+      const res = []
+
+      categoriesMap.forEach((categoriedDish, _) => res.push(categoriedDish))
+
+
       if (others.length > 0) res.push(others)
       setCategoriedDishes(res)
     }
+
 
   }, [restaurant])
   return (
@@ -70,7 +79,7 @@ const Restaurant = () => {
     restaurant ?
 
       <>
-        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant} categories={categories} close={() => setSelectedDish(null)} />}
+        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant}  close={() => setSelectedDish(null)} />}
         {editRestaurant && <EditRestaurantCard action='Edit' restaurant={restaurant} closeTab={() => setEditRestaurant(false)} />}
         {addDish && <EditDish action='Add dish' closeTab={() => setAddDish(false)} />}
         <div className='flex'>
@@ -84,9 +93,9 @@ const Restaurant = () => {
               <div className="details px-10 py-5 flex flex-col  h-[40%]" >
                 <div className='flex items-center'>
                   <p className='text-4xl font-semibold'>{restaurant.name}</p>
-                  <div className='ml-auto cursor-pointer' >
-                    <EditIcon onClick={() => setEditRestaurant(true)} />
-                    <AddIcon onClick={() => setAddDish(true)} />
+                  <div className='ml-auto cursor-pointer flex gap-3' >
+                    {uid === restaurant.id && <EditIcon onClick={() => setEditRestaurant(true)} />}
+                    {uid === restaurant.id && <AddIcon onClick={() => setAddDish(true)} />}
 
                   </div>
                 </div>

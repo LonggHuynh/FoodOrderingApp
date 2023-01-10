@@ -8,6 +8,9 @@ const Basket = ({ editable }) => {
     const { items, price, restaurant } = useSelector(state => state.cart)
 
 
+    // Use items to compute price, this is slower, but cleaner, more consistent. Both ways face the problem when there is a change in added item in the server .
+    // const price = items.map(item=> item.price* item.quantity).reduce((partialSum, a) => partialSum + a, 0)
+
     const handleClick = () => {
         navigate('/checkout');
     }

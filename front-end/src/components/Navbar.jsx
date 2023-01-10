@@ -9,8 +9,13 @@ import { Link } from 'react-router-dom'
 import { actionType } from '../redux/';
 import url from '../config/api'
 import EditRestaurantCard from './EditRestaurantCard';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 const Navbar = () => {
 
+
+    const navigate = useNavigate();
 
     const [editRestaurant, setEditRestaurant] = useState(false)
 
@@ -23,26 +28,55 @@ const Navbar = () => {
 
 
 
+    //Either null or === user_id
+
+
+
 
     const signup = async () => {
+        const { user } = await signInWithPopup(firebaseAuth, provider)
+        const { accessToken } = user
+        fetch(url('/users'), {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(async (response) => {
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
+            return data
+
+        }).then((data) => toast.success(data.msg))
+
+            .catch((error) => toast.error(error.message))
 
     }
     const login = async () => {
         const { user } = await signInWithPopup(firebaseAuth, provider)
         const { uid, email, displayName, accessToken } = user
 
-        const response = await fetch(url('/users'), {
+        fetch(url('/users'), {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).catch(err => console.log(err))
-        const data = await response.json().catch(err => console.log(err))
-        console.log(data)
+        }).then(async response => {
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
+            return data
 
+        }).then(data => {
 
-        const action = { type: actionType.SET_USER, payload: { uid, email, displayName, accessToken } }
-        dispatch(action)
+            dispatch({ type: actionType.SET_USER, payload: { uid, email, displayName, accessToken, hasRestaurant: data.data.restaurant_id !== null } })
+            return data
+        })
+            .then((data) => toast.success(data.msg))
+
+            .catch((error) => toast.error(error.message))
     }
 
 
@@ -50,16 +84,21 @@ const Navbar = () => {
 
     const logout = () => {
         sessionStorage.clear()
-        window.location.reload()
+        window.location.replace('/')
     }
 
     return (
 
         <div className='mb-25 z-[1] h-20 sticky top-0 bg-primary text-primaryOpposite flex px-10   justify-between'>
 
-            {editRestaurant && <EditRestaurantCard action='Create' closeTab={()=> setEditRestaurant(false)} />}
+            {editRestaurant && <EditRestaurantCard action='Create' closeTab={() => setEditRestaurant(false)} />}
 
-            <div className="logo flex items-center text-3xl font-bold">Logo</div>
+            <div className="logo flex items-center text-3xl font-bold">
+
+                <Link to='/'>
+                    Logo
+                </Link>
+            </div>
             <div className="cartAndMenu flex items-center gap-4">
                 <Link to={restaurant ? `/restaurants/${restaurant.id}` : ''} className="cart h-12 p-4 flex justify-between items-center border rounded-lg w-32" onClick={restaurant || ((event) => event.preventDefault())}>
                     <span><ShoppingBasketIcon /></span>
@@ -79,8 +118,14 @@ const Navbar = () => {
                                     currentUser ?
                                         <>
                                             <div className="p-4 border-1 border-b">{currentUser.displayName}</div>
-                                            <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
-                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={() => setEditRestaurant(true)}>Create restaurant </div>
+                                            <Link to='/orders'><div className="p-4 border-1 border-b cursor-pointer">My orders</div></Link>
+                                            {
+                                                currentUser.hasRestaurant ?
+                                                    <div className="p-4 border-1 border-b cursor-pointer"><Link to={`/restaurants/${currentUser.uid}`}>My restaurant</Link></div>
+                                                    :
+                                                    <div className="p-4 border-1 border-b cursor-pointer" onClick={() => setEditRestaurant(true)}>Create restaurant</div>
+
+                                            }
                                             <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Logout</div>
                                         </>
                                         :

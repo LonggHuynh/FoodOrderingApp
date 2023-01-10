@@ -10,7 +10,7 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
 
 
-    const [data, setData] = useState({ name: dish?.name || '', delivery_cost: dish ? dish.delivery_cost : 0, min_order: dish ? dish.min_order : 0, description: dish?.description || '', category: dish?.category || '' })
+    const [data, setData] = useState({ id: dish?.id, name: dish?.name || '', price: dish?.price || 0, description: dish?.description || '', category: dish?.category || '' })
     const [img, setImg] = useState(dish?.img)
 
     const { accessToken } = useSelector(state => state.user)
@@ -35,10 +35,15 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
             },
             body: JSON.stringify({ ...data, img: img })
         })
-            .then(response => response.json())
-            .then(data => console.log(data))
+            .then(async (response) => {
+                const data = await response.json()
+                if (!response.ok) {
+                    throw new Error(data.msg)
+                }
 
-        // window.location.reload()
+            }).then(() => window.location.reload())
+            .catch((error) => toast.error(error.message))
+
         //Fetch!!
 
     }
@@ -46,6 +51,7 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
 
     const handleChange = (e) => setData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
+
 
 
     return (
@@ -82,15 +88,14 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
                             <input type='number' placeholder='Price' onChange={handleChange} name='price' className='border-b focus:outline-none' value={data.price} />
 
-                            <input type='number' placeholder='Price' onChange={handleChange} name='category' className='border-b focus:outline-none' value={data.category} />
 
 
                             <div>
                                 <p>Category</p>
 
-                                <input type="text" list="cars" className='w-full border-b focus:outline-none px-2 py-1' />
-                                <datalist id="cars">
-                                    {categories?.map(item => <option className='w-full'>item</option>)}
+                                <input type="text" list="cars" className='w-full border-b focus:outline-none px-2 py-1' name='category' value={data.category} onChange={handleChange} />
+                                <datalist id="cars"   >
+                                    {categories?.map(item => <option className='w-full'>{item}</option>)}
 
                                 </datalist>
                             </div>
