@@ -40,8 +40,10 @@ const ItemModal = ({ dish, close, restaurant }) => {
                 <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm overflow-hidden' >
 
                     <div className="absolute right-3 top-4 flex gap-3">
-                        {uid == restaurant.id && <EditIcon onClick={() => setEditDish(true)} className='cursor-pointer' />}
-                        <CloseIcon onClick={close} className='cursor-pointer' />
+                        {uid == restaurant.id && <div className='p-1'><EditIcon onClick={() => setEditDish(true)} className='cursor-pointer' /></div>}
+                        <div className='bg-white rounded-full p-1'>
+                            <CloseIcon onClick={close} className='cursor-pointer' />
+                        </div>
                     </div>
                     <div className="imgContainer h-[35%] bg-red-700">
                         <img className='h-full w-full object-cover' src={dish.img} />

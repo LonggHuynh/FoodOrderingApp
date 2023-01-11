@@ -10,6 +10,11 @@ const auth = async (req, res, next) => {
     catch (err) {
         if (err.code === 'auth/id-token-expired')
             res.status(403).json({ msg: 'Your token is expired, please login again' })
+
+        else if (err.code === 'auth/argument-error')
+            res.status(403).json({ msg: 'Please login to visit the page.' })
+
+        
         next(err)
     }
 }
