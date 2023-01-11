@@ -9,7 +9,7 @@ const Category = ({ dishes, selectItem }) => {
             <div className="dishContainer mt-7 grid grid-cols-[repeat(4,1fr)] gap-y-5 gap-x-5">
                 {
 
-                    dishes.map(item => <DishCard dish={item} selectItem={() => selectItem(item)}/>)
+                    dishes.map(item => <DishCard key={item.id} dish={item} selectItem={() => selectItem(item)}/>)
                 }
 
             </div>

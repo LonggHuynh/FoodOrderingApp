@@ -1,6 +1,38 @@
 import React from 'react'
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
+import { useSelector } from 'react-redux'
+import url from '../config/api'
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-const OrderCard = ({ order, selectOrder }) => {
+const OrderCard = ({ order, selectOrder, rerender }) => {
+
+    const { accessToken } = useSelector(state => state.user)
+
+
+    const [rating, setRating] = useState(order.rating || 0)
+    const handleRateOrder = (rating) => {
+        setRating(rating)
+        fetch(url(`/orders/${order.id}`), {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({ rating })
+        })
+            .then(async (response) => {
+                const data = await response.json()
+                if (!response.ok) {
+                    throw new Error(data.msg)
+                }
+
+            }).then(() => rerender)
+            .catch((error) => toast.error(error.message))
+
+        //Fetch!!
+    }
     return (
         <div className=' h-60 flex border drop-shadow-md'>
 
@@ -15,6 +47,9 @@ const OrderCard = ({ order, selectOrder }) => {
                     <p className=' text-sm mt-auto'>{(order.date).slice(0, 10)}</p>
                     <p className='text-sm'>{order.address}</p>
                     <p className=''>${order.price}</p>
+                    <span>Rate my order
+                        {Array.from(Array(5).keys()).map(val => val + 1 <= rating ? <StarIcon onClick={() => handleRateOrder(val + 1)} /> : <StarBorderIcon onClick={() => handleRateOrder(val + 1)} />)}
+                    </span>
                 </div>
 
                 <div className='ml-auto flex items-end'>
@@ -25,4 +60,4 @@ const OrderCard = ({ order, selectOrder }) => {
     )
 }
 
-export default OrderCard
+export default OrderCard  

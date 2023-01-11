@@ -13,9 +13,8 @@ const auth = async (req, res, next) => {
 
         else if (err.code === 'auth/argument-error')
             res.status(403).json({ msg: 'Please login to visit the page.' })
-
-        
-        next(err)
+        else 
+            next(err)
     }
 }
 

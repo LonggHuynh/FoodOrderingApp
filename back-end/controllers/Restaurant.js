@@ -4,13 +4,16 @@ const db = require('../db')
 
 
 const getAllRestaurants = async (req, res, next) => {
+
+    const roundNumber = (num) => num.toString() + (num % 1 === 0 ? '.0' : '')
     try {
         const statement =
             `SELECT restaurant.*, avg(app_order.rating) as rating 
             FROM restaurant
             LEFT JOIN app_order on restaurant.id = app_order.restaurant_id
             GROUP BY restaurant.id`
-        const { rows } = await db.query(statement)
+        let { rows } = await db.query(statement)
+        rows = rows.map(restaurant => ({ ...restaurant, rating: restaurant.rating && roundNumber(Math.round(restaurant.rating * 10) / 10) }))
         res.status(200).json({ data: rows })
 
 
@@ -64,10 +67,11 @@ const editRestaurant = async (req, res, next) => {
 
 const getRestaurant = async (req, res, next) => {
     try {
-        const statement = 
-        `SELECT restaurant.*,
+        const statement =
+            `SELECT restaurant.*,
             (SELECT json_agg(to_jsonb(dish)) FROM dish WHERE dish.restaurant_id = restaurant.id) as dishes,
-            (SELECT avg(app_order.rating) FROM app_order WHERE app_order.restaurant_id = restaurant.id) as rating
+            (SELECT avg(app_order.rating) FROM app_order WHERE app_order.restaurant_id = restaurant.id) as rating,
+            (SELECT count(app_order.rating) FROM app_order WHERE app_order.restaurant_id = restaurant.id) as order_count
         FROM restaurant
         WHERE restaurant.id = $1;`
 

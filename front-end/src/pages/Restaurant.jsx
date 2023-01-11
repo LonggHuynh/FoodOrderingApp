@@ -79,7 +79,7 @@ const Restaurant = () => {
     restaurant ?
 
       <>
-        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant}  close={() => setSelectedDish(null)} />}
+        {selectedDish && <ItemModal dish={selectedDish} restaurant={restaurant} close={() => setSelectedDish(null)} />}
         {editRestaurant && <EditRestaurantCard action='Edit' restaurant={restaurant} closeTab={() => setEditRestaurant(false)} />}
         {addDish && <EditDish action='Add dish' closeTab={() => setAddDish(false)} />}
         <div className='flex'>
@@ -90,7 +90,11 @@ const Restaurant = () => {
               <div className="img bg-red-400 h-[60%] drop-shadow-md">
                 <img src={restaurant.background_url} className='w-full h-full object-cover' />
               </div>
-              <div className="details px-10 py-5 flex flex-col  h-[40%]" >
+              <div className="details px-10 py-5 flex flex-col  h-[40%] relative" >
+
+                <div className='w-28 h-28 bg-white absolute -top-24 left-8'>
+                  <img className='w-full h-full object-cover' src={restaurant.logo_url} />
+                </div>
                 <div className='flex items-center'>
                   <p className='text-4xl font-semibold'>{restaurant.name}</p>
                   <div className='ml-auto cursor-pointer flex gap-3' >
@@ -106,7 +110,7 @@ const Restaurant = () => {
                     restaurant.rating ?
                       <>
                         {[...Array(5).keys()].map(val => val + 0.5 <= restaurant.rating ? <StarIcon key={val} /> : <StarBorderIcon key={val} />)}
-                        <span className='ml-1'> (500)</span>
+                        <span className='ml-1'> ({restaurant.order_count})</span>
                       </> :
                       <>
                         <p>Rating not available</p>
@@ -125,7 +129,7 @@ const Restaurant = () => {
 
               {
                 categoriedDishes ?
-                  categoriedDishes.map(item => <Category dishes={item} selectItem={(item) => setSelectedDish(item)} />)
+                  categoriedDishes.map((item, ind) => <Category key={ind} dishes={item} selectItem={(item) => setSelectedDish(item)} />)
                   :
                   <div className='flex h-full  items-center justify-center'>
                     <ClipLoader />

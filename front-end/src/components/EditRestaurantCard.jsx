@@ -63,7 +63,7 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
 
                     <div className='px-4 mt-16 overflow-y-scroll scrollbar-w-[3px]'>
                         <form className='flex flex-col gap-10 mb-10 ' >
-                            <input className='border-b text-xl focus:outline-none' type='text' placeholder='Restaurant name' value={data.name} name='name' onChange={handleChange} />
+                            <input className='border-b text-2xl focus:outline-none' type='text' placeholder='Restaurant name' value={data.name} name='name' onChange={handleChange} />
 
 
                             <div className='backgroundInput'>
@@ -75,8 +75,17 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
                                 <p>Logo</p>
                                 <ImageInput image={logo} setImage={setLogo} />
                             </div>
-                            <input type='number' placeholder='Min order' onChange={handleChange} name='min_order' value={data.min_order} className='border-b focus:outline-none' />
-                            <input type='number' placeholder='Delivery fee' onChange={handleChange} name='delivery_cost' value={data.delivery_cost} className='border-b focus:outline-none mb-10' />
+
+
+                            <div className='logoInput'>
+                                <p>Min order</p>
+                                <input type='number' onChange={handleChange} name='min_order' value={data.min_order} className='border-b focus:outline-none w-full' />
+                            </div>
+
+                            <div className='logoInput'>
+                                <p>Min order</p>
+                                <input type='number' onChange={handleChange} name='delivery_cost' value={data.delivery_cost} className='w-full border-b focus:outline-none mb-10' />
+                            </div>
 
                         </form>
                     </div>

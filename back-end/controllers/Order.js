@@ -29,7 +29,32 @@ const getOrdersOfUser = async (req, res, next) => {
 
 
 const rateOrder = async (req, res, next) => {
+    const { uid } = req.user
+    const { id } = req.params
+    const {rating} = req.body
 
+
+    const statement = `UPDATE app_order 
+        SET rating = $1
+        WHERE id = $2
+        AND uid = $3
+    `
+    try {
+
+        const { rowCount } = await db.query(statement, [rating, id, uid])
+        if (rowCount == 0) {
+
+            res.status(400).json({ msg: 'You do not have this order' })
+        }
+        else {
+            res.status(201).json({ msg: 'Ordered updated' })
+        }
+    } catch (err) {
+
+        next(err)
+
+
+    }
 }
 
 const addNewOrder = async (req, res, next) => {
@@ -86,7 +111,7 @@ const addNewOrder = async (req, res, next) => {
         }
 
 
-        if (total - Number(rows[0].delivery_cost)  < rows[0].min_order) {
+        if (total - Number(rows[0].delivery_cost) < rows[0].min_order) {
             await db.query('ABORT')
             res.status(400).json({ msg: `The minimum order price hasn't been reached yet.` })
             next()

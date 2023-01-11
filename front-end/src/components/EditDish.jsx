@@ -58,7 +58,7 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
         <>
 
             <div className='selectedItem fixed w-screen h-screen flex items-center justify-center z-[3] left-0 top-0 bg-primary bg-opacity-50 py-8' onClick={closeTab}>
-                <div className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm text-primary' onClick={e => e.stopPropagation()} >
+                <form onSubmit={handleSubmit} className='relative w-[26vw] bg-white h-[90vh] flex flex-col rounded-sm text-primary' onClick={e => e.stopPropagation()} >
 
                     <div className='absolute top-3 right-3 cursor-pointer' onClick={closeTab}>
                         <CloseIcon />
@@ -69,8 +69,8 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
 
                     <div className='px-4 mt-16 overflow-y-scroll scrollbar-w-[3px]'>
-                        <form className='flex flex-col gap-10 mb-10 ' >
-                            <input className='border-b text-xl focus:outline-none' type='text' placeholder='Dish name' name='name' onChange={handleChange} value={data.name} />
+                        <div className='flex flex-col gap-10 mb-10 ' >
+                            <input required className='border-b text-2xl focus:outline-none' type='text' placeholder='Dish name' name='name' onChange={handleChange} value={data.name} />
 
 
                             <div>
@@ -82,11 +82,16 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
                             <div>
                                 <p>Description</p>
-                                <textarea rows="5" placeholder='Min order' onChange={handleChange} name='description' className='border border-primary p-2  w-full' value={data.description} />
+                                <textarea required rows="5" placeholder='Min order' onChange={handleChange} name='description' className='border border-primary p-2  w-full' value={data.description} />
 
                             </div>
 
-                            <input type='number' placeholder='Price' onChange={handleChange} name='price' className='border-b focus:outline-none' value={data.price} />
+                            <div>
+                                <p>Price</p>
+                                <input  required type='number' placeholder='Price' onChange={handleChange} name='price' className='border-b w-full focus:outline-none' value={data.price} />
+
+                            </div>
+
 
 
 
@@ -100,7 +105,7 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
                                 </datalist>
                             </div>
 
-                        </form>
+                        </div>
                     </div>
 
 
@@ -109,13 +114,13 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
 
 
-                    <button className='mt-auto h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold' onClick={handleSubmit}>
+                    <button className='mt-auto h-[10%] bg-primary text-primaryOpposite p-3 text-lg semi-bold'>
                         {action}
                     </button>
 
 
 
-                </div>
+                </form>
 
 
 
