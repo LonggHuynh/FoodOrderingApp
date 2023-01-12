@@ -6,13 +6,16 @@ import "./Checkout.css"
 import url from '../config/api'
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux'
+import ClipLoader from "react-spinners/ClipLoader";
 
-const useForceUpdate = () => {
-    const [value, setValue] = useState(false);
-    return () => setValue(value => !value);
-}
+
+
+
 
 const Orders = () => {
+
+
+    const [value, setValue] = useState(false);
 
 
 
@@ -21,9 +24,8 @@ const Orders = () => {
     const [selectedOrder, setSelectedOrder] = useState({ items: [] })
 
 
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState(null)
     useEffect(() => {
-
         fetch(url('/orders'), {
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ const Orders = () => {
             }).catch((error) => toast.error(error.message))
 
 
-    }, [])
+    }, [value])
 
 
 
@@ -55,17 +57,22 @@ const Orders = () => {
 
 
     return (
-        <div className='checkout flex w-full'>
-            <div className=' flex-1 px-32 py-32  flex flex-col gap-10'>
-                <p className='text-4xl'>Order History</p>
+        orders ?
+            <div className='checkout flex w-full'>
+                <div className=' flex-1 px-32 py-32  flex flex-col gap-10'>
+                    <p className='text-4xl'>Order History</p>
 
-                {
-                    orders.map(order => <OrderCard key={order.id} order={order} selectOrder={() => setSelectedOrder(order)} />)
-                }
+                    {
+                        orders.map(order => <OrderCard key={order.id} order={order} selectOrder={() => setSelectedOrder(order)} rerender={()=> setValue(prev=>!prev)} />)
+                    }
 
+                </div>
+                <CartInfo items={selectedOrder.items} restaurant={selectedOrder.restaurant} price={selectedOrder.price} />
             </div>
-            <CartInfo items={selectedOrder.items} restaurant={selectedOrder.restaurant} price={selectedOrder.price} rerender={useForceUpdate} />
-        </div>
+            :
+            <div className=' flex items-center justify-center h-screen'>
+                <ClipLoader />
+            </div>
     )
 }
 

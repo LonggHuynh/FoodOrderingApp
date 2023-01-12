@@ -4,16 +4,13 @@ import StarIcon from '@mui/icons-material/Star';
 import { useSelector } from 'react-redux'
 import url from '../config/api'
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 
 const OrderCard = ({ order, selectOrder, rerender }) => {
 
     const { accessToken } = useSelector(state => state.user)
 
 
-    const [rating, setRating] = useState(order.rating || 0)
     const handleRateOrder = (rating) => {
-        setRating(rating)
         fetch(url(`/orders/${order.id}`), {
             method: 'PUT',
             headers: {
@@ -27,12 +24,12 @@ const OrderCard = ({ order, selectOrder, rerender }) => {
                 if (!response.ok) {
                     throw new Error(data.msg)
                 }
-
-            }).then(() => rerender)
+                toast.success(data.msg)
+            }).then(() => rerender())
             .catch((error) => toast.error(error.message))
 
-        //Fetch!!
     }
+
     return (
         <div className=' h-60 flex border drop-shadow-md'>
 
@@ -47,9 +44,12 @@ const OrderCard = ({ order, selectOrder, rerender }) => {
                     <p className=' text-sm mt-auto'>{(order.date).slice(0, 10)}</p>
                     <p className='text-sm'>{order.address}</p>
                     <p className=''>${order.price}</p>
-                    <span>Rate my order
-                        {Array.from(Array(5).keys()).map(val => val + 1 <= rating ? <StarIcon onClick={() => handleRateOrder(val + 1)} /> : <StarBorderIcon onClick={() => handleRateOrder(val + 1)} />)}
-                    </span>
+                    <div className='flex items-center'>
+                        <p className='text-sm'>Rate the order</p>
+                        <div className='ml-3'>
+                            {Array.from(Array(5).keys()).map(val => val + 1 <= order.rating ? <StarIcon onClick={() => handleRateOrder(val + 1)} /> : <StarBorderIcon onClick={() => handleRateOrder(val + 1)} />)}
+                        </div>
+                    </div>
                 </div>
 
                 <div className='ml-auto flex items-end'>

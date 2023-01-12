@@ -95,7 +95,6 @@ const store = configureStore({ reducer, preloadedState: initialState })
 
 
 store.subscribe(() => {
-  console.log(store.getState())
   sessionStorage.setItem('state', JSON.stringify(store.getState()))
 })
 

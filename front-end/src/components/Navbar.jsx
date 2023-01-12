@@ -121,7 +121,7 @@ const Navbar = () => {
                                             <Link to='/orders'><div className="p-4 border-1 border-b cursor-pointer">My orders</div></Link>
                                             {
                                                 currentUser.hasRestaurant ?
-                                                    <div className="p-4 border-1 border-b cursor-pointer"><Link to={`/restaurants/${currentUser.uid}`}>My restaurant</Link></div>
+                                                    <Link reloadDocument to={`/restaurants/${currentUser.uid}`}> <div className="p-4 border-1 border-b cursor-pointer"> My restaurant</div></Link>
                                                     :
                                                     <div className="p-4 border-1 border-b cursor-pointer" onClick={() => setEditRestaurant(true)}>Create restaurant</div>
 

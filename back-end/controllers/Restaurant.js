@@ -13,7 +13,8 @@ const getAllRestaurants = async (req, res, next) => {
             LEFT JOIN app_order on restaurant.id = app_order.restaurant_id
             GROUP BY restaurant.id`
         let { rows } = await db.query(statement)
-        rows = rows.map(restaurant => ({ ...restaurant, rating: restaurant.rating && roundNumber(Math.round(restaurant.rating * 10) / 10) }))
+        rows = rows.map(restaurant => ({ ...restaurant, rating: restaurant.rating && roundNumber(Math.round(restaurant.rating * 10)) / 10 }))
+        
         res.status(200).json({ data: rows })
 
 
