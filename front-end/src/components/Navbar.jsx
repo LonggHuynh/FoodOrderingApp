@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
 
 
-    const navigate = useNavigate();
 
     const [editRestaurant, setEditRestaurant] = useState(false)
 
@@ -31,6 +30,34 @@ const Navbar = () => {
     //Either null or === user_id
 
 
+    //This function is only for demo, hence, duplicate code is not handled
+    const loginWithDummy = async () => {
+        const user = { uid: 'tzOVE3pENMW6pzmHrXpieeej8942', email: 'dummy@mail.com', displayName: 'Dummy', accessToken: 'secret' }
+        const { uid, email, displayName, accessToken } = user
+
+
+        fetch(url('/users'), {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(async response => {
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
+            return data
+
+        }).then(data => {
+
+            dispatch({ type: actionType.SET_USER, payload: { uid, email, displayName, accessToken, hasRestaurant: data.data.restaurant_id !== null } })
+            return data
+        })
+            .then((data) => toast.success(data.msg))
+
+            .catch((error) => toast.error(error.message))
+
+    }
 
 
     const signup = async () => {
@@ -132,6 +159,7 @@ const Navbar = () => {
                                         <>
                                             <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Login</div>
                                             <div className="p-4 border-1 border-b cursor-pointer" onClick={signup}>Signup</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={loginWithDummy}>Login with dummy user</div>
                                         </>
                                 }
 

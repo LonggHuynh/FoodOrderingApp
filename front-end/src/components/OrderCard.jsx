@@ -34,7 +34,7 @@ const OrderCard = ({ order, selectOrder, rerender }) => {
         <div className=' h-60 flex border drop-shadow-md'>
 
             <div className='imgContainer flex-1 bg-slate-300'>
-                <img src={order.restaurant.logo_url} className='w-full h-full object-cover' />
+                <img src={order.restaurant.logo_url} alt='' className='w-full h-full object-cover' />
             </div>
             <div className='flex-[3] bg-primaryOpposite  flex  px-4 py-7'>
 
@@ -47,7 +47,7 @@ const OrderCard = ({ order, selectOrder, rerender }) => {
                     <div className='flex items-center'>
                         <p className='text-sm'>Rate the order</p>
                         <div className='ml-3'>
-                            {Array.from(Array(5).keys()).map(val => val + 1 <= order.rating ? <StarIcon onClick={() => handleRateOrder(val + 1)} /> : <StarBorderIcon onClick={() => handleRateOrder(val + 1)} />)}
+                            {Array.from(Array(5).keys()).map(val => val + 1 <= order.rating ? <StarIcon key={val} onClick={() => handleRateOrder(val + 1)} /> : <StarBorderIcon key={val} onClick={() => handleRateOrder(val + 1)} />)}
                         </div>
                     </div>
                 </div>

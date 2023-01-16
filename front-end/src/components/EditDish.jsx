@@ -88,7 +88,7 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
 
                             <div>
                                 <p>Price</p>
-                                <input  required type='number' placeholder='Price' onChange={handleChange} name='price' className='border-b w-full focus:outline-none' value={data.price} />
+                                <input required type='number' placeholder='Price' onChange={handleChange} name='price' className='border-b w-full focus:outline-none' value={data.price} />
 
                             </div>
 
@@ -99,8 +99,8 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
                                 <p>Category</p>
 
                                 <input type="text" list="cars" className='w-full border-b focus:outline-none px-2 py-1' name='category' value={data.category} onChange={handleChange} />
-                                <datalist id="cars"   >
-                                    {categories?.map(item => <option className='w-full'>{item}</option>)}
+                                <datalist id="categories"   >
+                                    {categories?.map((item, ind) => <option key={ind} className='w-full'>{item}</option>)}
 
                                 </datalist>
                             </div>

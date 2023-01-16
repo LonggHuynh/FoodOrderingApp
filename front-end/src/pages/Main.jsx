@@ -1,7 +1,7 @@
 import React from 'react'
 import RestaurantCard from '../components/RestaurantCard'
 import SearchIcon from '@mui/icons-material/Search';
-import { ListItemSecondaryAction, Switch } from '@mui/material';
+import { Switch } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom'
@@ -17,9 +17,9 @@ const Main = () => {
     const [filteredRestaurants, setFilteredRestaurants] = useState([])
 
 
-    useEffect(()=>{
-        setFilteredRestaurants(restaurants.filter(restaurant=> (!isDeliveryFree|| restaurant.delivery_cost==0)&& (restaurant.min_order<= minOrder)&& restaurant.name.toUpperCase().includes(searchTerm.toUpperCase()) ))
-    },[restaurants, searchTerm, minOrder, isDeliveryFree])
+    useEffect(() => {
+        setFilteredRestaurants(restaurants.filter(restaurant => (!isDeliveryFree || restaurant.delivery_cost === 0) && (restaurant.min_order <= minOrder) && restaurant.name.toUpperCase().includes(searchTerm.toUpperCase())))
+    }, [restaurants, searchTerm, minOrder, isDeliveryFree])
 
 
 
@@ -81,7 +81,7 @@ const Main = () => {
                             <p>
                                 <SearchIcon />
                             </p>
-                            <input type='text' className='w-full p-2 text-lg border-none focus:outline-none' value={searchTerm} onChange={(e)=> setSearchTerm(e.target.value)} />
+                            <input type='text' className='w-full p-2 text-lg border-none focus:outline-none' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </div>
 
                         <div className='sort flex-1 border-2 rounded'>
@@ -101,8 +101,8 @@ const Main = () => {
                     </div>
                     <div className="cardGrid grid grid-cols-2 gap-12 mt-5">
                         {filteredRestaurants.map(item =>
-                            <Link to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
-                                <RestaurantCard key={item.id} restaurant={item} />
+                            <Link key={item.id} to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
+                                <RestaurantCard restaurant={item} />
                             </Link>
                         )}
 
