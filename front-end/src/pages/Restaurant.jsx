@@ -37,7 +37,7 @@ const Restaurant = () => {
     fetch((url(`/restaurants/${id}`)))
       .then(response => response.json())
       .then(data => setRestaurant(data.data))
-  }, [])
+  }, [id])
 
 
 
@@ -87,13 +87,13 @@ const Restaurant = () => {
           <div className="mainPage flex-1 basis-0 relative">
 
             <div className='backGround h-[400px] bg-primaryOpposite drop-shadow-lg'>
-              <div className="img bg-red-400 h-[60%] drop-shadow-md">
-                <img src={restaurant.background_url} className='w-full h-full object-cover' />
+              <div className="img bg-red-400 h-[60%] drop-shadow-md" >
+                <img src={restaurant.background_url} alt='' className='w-full h-full object-cover'  />
               </div>
               <div className="details px-10 py-5 flex flex-col  h-[40%] relative" >
 
                 <div className='w-28 h-28 bg-white absolute -top-24 left-8'>
-                  <img className='w-full h-full object-cover' src={restaurant.logo_url} />
+                  <img className='w-full h-full object-cover' alt='' src={restaurant.logo_url} />
                 </div>
                 <div className='flex items-center'>
                   <p className='text-4xl font-semibold'>{restaurant.name}</p>

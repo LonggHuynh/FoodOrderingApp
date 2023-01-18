@@ -16,7 +16,7 @@ const RestaurantCard = ({ restaurant }) => {
             </div>
 
             <div className='image flex-[3] bg-white'>
-                <img src={restaurant.logo_url} className='w-full h-full ' />
+                <img src={restaurant.logo_url} alt='' className='w-full h-full ' />
 
             </div>
         </div>

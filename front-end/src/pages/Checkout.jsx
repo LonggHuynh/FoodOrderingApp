@@ -34,6 +34,18 @@ const Checkout = () => {
 
     // To prevent double click
     useEffect(() => {
+        const composeOrder = async () => {
+            if (!cart.restaurant) {
+                throw new Error('There is nothing to checkout')
+            }
+            const simplifiedCart = {}
+            //Reduce the size of the cart
+            simplifiedCart.restaurant = { id: cart.restaurant.id }
+            simplifiedCart.items = cart.items.map(item => ({ id: item.id, quantity: item.quantity }))
+            simplifiedCart.amountPaid = Number(cart.price) + Number(cart.restaurant.delivery_cost)
+            return { info, cart: simplifiedCart }
+
+        }
         if (loading) {
             const path = accessToken ? '/orders' : '/orders/no-auth'
             composeOrder().then((order) => fetch(url(path), {
@@ -55,9 +67,9 @@ const Checkout = () => {
                 .then(() => dispatch({ type: actionType.CLEAR_CART }))
                 .then(() => navigate(accessToken ? '/orders' : '/'))
                 .then(() => setLoading(false))
-            .catch((error) => {toast.error(error.message); setLoading(false)})
+                .catch((error) => { toast.error(error.message); setLoading(false) })
         }
-    }, [loading])
+    }, [loading, accessToken, dispatch, navigate, cart.items, cart.price, cart.restaurant, info])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -67,21 +79,7 @@ const Checkout = () => {
 
 
 
-    const composeOrder = async () => {
 
-
-        if (!cart.restaurant){
-            throw new Error('There is nothing to checkout')
-        }
-        const simplifiedCart = {}
-        //Reduce the size of the cart
-        simplifiedCart.restaurant = { id: cart.restaurant.id }
-        simplifiedCart.items = cart.items.map(item => ({ id: item.id, quantity: item.quantity }))
-        simplifiedCart.amountPaid = Number(cart.price) + Number(cart.restaurant.delivery_cost)
-
-        return { info, cart: simplifiedCart }
-
-    }
 
     return (
         <>

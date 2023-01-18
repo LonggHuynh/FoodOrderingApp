@@ -43,8 +43,9 @@ const Main = () => {
 
 
 
-                    <div className='filterItem'>
-                        <p className='text-2xl mb-3 font-semibold'>Free Delivery</p>
+
+                    <div className='filterItem mt-8'>
+                        <p className='text-3xl '>Free Delivery</p>
                         <Switch
                             checked={isDeliveryFree}
                             onChange={() => setIsDeliveryFree(prev => !prev)}
@@ -52,8 +53,9 @@ const Main = () => {
                         />
                     </div>
 
-                    <div className='filterItem'>
-                        <p className='text-2xl mb-3 font-semibold'>Min Order</p>
+
+                    <div className='filterItem mt-8'>
+                        <p className='text-3xl mb-3 '>Min Order</p>
                         <div className='inputItem mb-2'>
                             <input type='radio' id='10' value={10} name='price' onChange={(e) => setMinOrder(e.target.value)} />
                             <label className='ml-3' htmlFor='10'> $10</label>
@@ -76,7 +78,11 @@ const Main = () => {
 
 
                 <div className="list flex-[5]  py-14 pl-14 pr-32 min-h-screen">
-                    <div className="searchAndSort flex gap-10">
+
+                    <div className='w-full h-60 '>
+                        <img className='w-full h-full object-cover object-center' alt='' src='https://images.squarespace-cdn.com/content/v1/53b839afe4b07ea978436183/1608506169128-S6KYNEV61LEP5MS1UIH4/traditional-food-around-the-world-Travlinmad.jpg' />
+                    </div>
+                    <div className="searchAndSort flex gap-10 mt-20">
                         <div className='searchBar border-2 rounded px-4 py-2 flex gap-3 items-center flex-[2]'>
                             <p>
                                 <SearchIcon />
@@ -88,7 +94,7 @@ const Main = () => {
                             <select
                                 className="outline-none w-full bg-white p-4 cursor-pointer"
                             >
-                                <option value="other" className="bg-white">
+                                <option value="rating" className="bg-white">
                                     Highest rating
                                 </option>
                             </select>
@@ -99,7 +105,7 @@ const Main = () => {
                     <div className='mt-10'>
                         <p className='text-xl'>{filteredRestaurants.length} restaurants</p>
                     </div>
-                    <div className="cardGrid grid grid-cols-2 gap-12 mt-5">
+                    <div className="cardGrid flex flex-wrap gap-x-32 gap-y-10 mt-5">
                         {filteredRestaurants.map(item =>
                             <Link key={item.id} to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
                                 <RestaurantCard restaurant={item} />

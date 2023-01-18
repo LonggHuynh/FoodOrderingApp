@@ -1,6 +1,6 @@
 # Description
 
-Food ordering app, with multiple restaurants. Users can create a restaurant and dish in responding restaurant. 
+Food ordering app, with multiple restaurants. Users can create a restaurant and adding dish in responding restaurant. 
 
 
 
