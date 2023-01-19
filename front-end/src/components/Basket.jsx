@@ -2,6 +2,7 @@ import React from 'react'
 import CartItem from '../components/CartItem'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 const Basket = ({ editable }) => {
 
     const navigate = useNavigate();
@@ -11,8 +12,13 @@ const Basket = ({ editable }) => {
     // Use items to compute price, this is slower, but cleaner, more consistent. Both ways face the problem when there is a change in added item in the server .
     // const price = items.map(item=> item.price* item.quantity).reduce((partialSum, a) => partialSum + a, 0)
 
-    const handleClick = () => {
-        navigate('/checkout');
+    const handleCheckout = () => {
+        if (!restaurant)
+            toast.error('You have nothing in the cart.')
+        else if (restaurant.min_order > price)
+            toast.error('Please add more items to meet the minimum order requirement.')
+        else
+            navigate('/checkout');
     }
     // Requires flex parent
     return (
@@ -56,7 +62,7 @@ const Basket = ({ editable }) => {
             }
 
             {editable &&
-                <button disabled={!restaurant || restaurant.min_order > price} className='mt-10 text-lg  text-primaryOpposite bg-primary border rounded-lg py-2 flex items-center justify-center' onClick={handleClick}>
+                <button className='mt-10 text-lg  text-primaryOpposite bg-primary border rounded-lg py-2 flex items-center justify-center' onClick={handleCheckout}>
                     Check out
                 </button>
 

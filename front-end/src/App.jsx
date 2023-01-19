@@ -6,7 +6,7 @@ import Restaurant from './pages/Restaurant'
 import Orders from './pages/Orders'
 import Checkout from './pages/Checkout'
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {

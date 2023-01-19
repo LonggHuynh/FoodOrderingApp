@@ -10,7 +10,6 @@ import { actionType } from '../redux/';
 import url from '../config/api'
 import EditRestaurantCard from './EditRestaurantCard';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 

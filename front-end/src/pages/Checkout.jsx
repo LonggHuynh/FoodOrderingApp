@@ -69,7 +69,7 @@ const Checkout = () => {
                 .then(() => setLoading(false))
                 .catch((error) => { toast.error(error.message); setLoading(false) })
         }
-    }, [loading, accessToken, dispatch, navigate, cart.items, cart.price, cart.restaurant, info])
+    }, [loading, accessToken, dispatch, navigate])
 
     const handleSubmit = (e) => {
         e.preventDefault()

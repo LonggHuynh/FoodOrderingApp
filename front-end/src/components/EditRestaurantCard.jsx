@@ -26,7 +26,7 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
 
 
         fetch(url('/restaurants'), {
-            method: action == 'Create' ? 'POST' : 'PUT',
+            method: action === 'Create' ? 'POST' : 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `Bearer ${accessToken}`

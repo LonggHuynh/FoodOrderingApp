@@ -51,6 +51,7 @@ const ImageInput = ({ image, setImage }) => {
                             <div className="relative h-full">
                                 <img
                                     src={image}
+                                    alt=''
                                     className="w-full h-full object-cover"
                                 />
                                 <button
