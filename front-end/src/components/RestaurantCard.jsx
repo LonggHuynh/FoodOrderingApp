@@ -10,7 +10,11 @@ const RestaurantCard = ({ restaurant }) => {
                     <p className='text-md'>{restaurant.delivery_cost > 0 ? `$ ${restaurant.delivery_cost}` : `Free delivery`}</p>
                 </div>
                 {restaurant.rating ?
-                    <div className=' mt-auto self-start flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white'> {restaurant.rating}</div>
+                    <div className='flex mt-auto'>
+                        <div className='  self-start flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white'> {restaurant.rating}</div>
+                        <div className='flex items-center justify-center ml-2 text-sm'>({restaurant.order_count})</div>
+
+                    </div>
                     :
                     <p className='mt-auto'>{`No rating available`} </p>}
             </div>

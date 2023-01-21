@@ -8,7 +8,7 @@ const getAllRestaurants = async (req, res, next) => {
     const roundNumber = (num) => num.toString() + (num % 1 === 0 ? '.0' : '')
     try {
         const statement =
-            `SELECT restaurant.*, avg(app_order.rating) as rating 
+            `SELECT restaurant.*, avg(app_order.rating) as rating, count(app_order.rating ) as order_count
             FROM restaurant
             LEFT JOIN app_order on restaurant.id = app_order.restaurant_id
             GROUP BY restaurant.id`

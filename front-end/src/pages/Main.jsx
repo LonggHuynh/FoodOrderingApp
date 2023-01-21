@@ -10,18 +10,38 @@ const Main = () => {
     const [isDeliveryFree, setIsDeliveryFree] = useState(false)
     const [minOrder, setMinOrder] = useState(Infinity)
     const [searchTerm, setSearchTerm] = useState('')
+    const [minRating, setMinRating] = useState(0)
 
 
 
     const [restaurants, setRestaurants] = useState([])
     const [filteredRestaurants, setFilteredRestaurants] = useState([])
+    const [sortTerm, setSortTerm] = useState('')
+
+
+    const [sortedRestaurants, setSortedRestaurants] = useState([])
 
 
     useEffect(() => {
-        setFilteredRestaurants(restaurants.filter(restaurant => (!isDeliveryFree || restaurant.delivery_cost === 0) && (restaurant.min_order <= minOrder) && restaurant.name.toUpperCase().includes(searchTerm.toUpperCase())))
-    }, [restaurants, searchTerm, minOrder, isDeliveryFree])
+        setFilteredRestaurants(restaurants.filter(restaurant =>
+            (!isDeliveryFree || restaurant.delivery_cost === 0)
+            && (restaurant.min_order <= minOrder)
+            && (restaurant.rating >= minRating)
+            && restaurant.name.toUpperCase().includes(searchTerm.toUpperCase())))
+    }, [restaurants, searchTerm, minOrder, isDeliveryFree, minRating])
 
 
+    useEffect(() => {
+        console.log(sortTerm)
+        if (sortTerm == '') setSortedRestaurants(filteredRestaurants)
+        else {
+            setSortedRestaurants(items => {
+                let sorted = [...items]
+                sorted.sort((a, b) => -Number(a[sortTerm] || 0) + Number(b[sortTerm] || 0))
+                return sorted;
+            })
+        }
+    }, [sortTerm, filteredRestaurants])
 
     useEffect(() => {
 
@@ -44,8 +64,8 @@ const Main = () => {
 
 
 
-                    <div className='filterItem mt-8'>
-                        <p className='text-3xl '>Free Delivery</p>
+                    <div className='filterItem mt-6'>
+                        <p className='text-2xl '>Free Delivery</p>
                         <Switch
                             checked={isDeliveryFree}
                             onChange={() => setIsDeliveryFree(prev => !prev)}
@@ -54,30 +74,50 @@ const Main = () => {
                     </div>
 
 
-                    <div className='filterItem mt-8'>
-                        <p className='text-3xl mb-3 '>Min Order</p>
+                    <fieldset id="minOrder">
+                        <p className='text-2xl mb-3 '>Min Order</p>
                         <div className='inputItem mb-2'>
-                            <input type='radio' id='10' value={10} name='price' onChange={(e) => setMinOrder(e.target.value)} />
+                            <input type='radio' id='10' value={10} name='minOrder' onChange={(e) => setMinOrder(e.target.value)} />
                             <label className='ml-3' htmlFor='10'> $10</label>
                         </div>
 
                         <div className='inputItem mb-2' >
-                            <input type='radio' id='20' value={20} name='price' onChange={(e) => setMinOrder(e.target.value)} />
+                            <input type='radio' id='20' value={20} name='minOrder' onChange={(e) => setMinOrder(e.target.value)} />
                             <label className='ml-3' htmlFor='20'> $20 </label>
                         </div>
 
                         <div className='inputItem mb-2' >
-                            <input type='radio' id='all' value={Infinity} name='price' onChange={(e) => setMinOrder(e.target.value)} />
+                            <input type='radio' id='all' value={Infinity} name='minOrder' onChange={(e) => setMinOrder(e.target.value)} />
                             <label className='ml-3' htmlFor='all'> All</label>
                         </div>
-                    </div>
+                    </fieldset>
+
+                    <fieldset id="minRating">
+                        <p className='text-2xl mb-3 '>Rating</p>
+
+                        {Array.from(Array(5).keys()).map((val) =>
+                            <div className='inputItem mb-2'>
+                                <input type='radio' id='10' value={val + 1} name='minRating' onChange={(e) => setMinRating(e.target.value)} />
+                                <label className='ml-2' htmlFor='10'> {val + 1}</label>
+                            </div>
+                        )
+
+                        }
+                        <div className='inputItem mb-2'>
+                            <input type='radio' id='10' value={0} name='minRating' onChange={(e) => setMinRating(e.target.value)} />
+                            <label className='ml-2' htmlFor='10'> All</label>
+                        </div>
+
+
+
+                    </fieldset>
 
 
 
                 </div>
 
 
-                <div className="list flex-[5]  py-14 pl-14 pr-32 min-h-screen">
+                <div className="list flex-[7]  py-14 pl-14 pr-32 min-h-screen">
 
                     <div className='w-full h-60 '>
                         <img className='w-full h-full object-cover object-center' alt='' src='https://images.squarespace-cdn.com/content/v1/53b839afe4b07ea978436183/1608506169128-S6KYNEV61LEP5MS1UIH4/traditional-food-around-the-world-Travlinmad.jpg' />
@@ -91,9 +131,14 @@ const Main = () => {
                         </div>
 
                         <div className='sort flex-1 border-2 rounded'>
-                            <select
-                                className="outline-none w-full bg-white p-4 cursor-pointer"
-                            >
+                            <select className="outline-none w-full bg-white p-4 cursor-pointer" value={sortTerm} onChange={e => setSortTerm(e.target.value)} >
+                                <option value="" className="bg-white">
+                                    --
+                                </option>
+
+                                <option value="order_count" className="bg-white">
+                                    Popularity
+                                </option>
                                 <option value="rating" className="bg-white">
                                     Highest rating
                                 </option>
@@ -103,10 +148,10 @@ const Main = () => {
                     </div>
 
                     <div className='mt-10'>
-                        <p className='text-xl'>{filteredRestaurants.length} restaurants</p>
+                        <p className='text-xl'>{sortedRestaurants.length} restaurants</p>
                     </div>
                     <div className="cardGrid flex flex-wrap gap-x-32 gap-y-10 mt-5">
-                        {filteredRestaurants.map(item =>
+                        {sortedRestaurants.map(item =>
                             <Link key={item.id} to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
                                 <RestaurantCard restaurant={item} />
                             </Link>
