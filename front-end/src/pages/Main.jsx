@@ -28,19 +28,18 @@ const Main = () => {
             && (restaurant.min_order <= minOrder)
             && (restaurant.rating >= minRating)
             && restaurant.name.toUpperCase().includes(searchTerm.toUpperCase())))
+
     }, [restaurants, searchTerm, minOrder, isDeliveryFree, minRating])
 
 
     useEffect(() => {
-        console.log(sortTerm)
-        if (sortTerm == '') setSortedRestaurants(filteredRestaurants)
-        else {
-            setSortedRestaurants(items => {
-                let sorted = [...items]
-                sorted.sort((a, b) => -Number(a[sortTerm] || 0) + Number(b[sortTerm] || 0))
-                return sorted;
-            })
+
+        let sorted = [...filteredRestaurants]
+
+        if (sortTerm !== '') {
+            sorted.sort((a, b) => -Number(a[sortTerm] || 0) + Number(b[sortTerm] || 0))
         }
+        setSortedRestaurants(sorted)
     }, [sortTerm, filteredRestaurants])
 
     useEffect(() => {
@@ -117,7 +116,7 @@ const Main = () => {
                 </div>
 
 
-                <div className="list flex-[7]  py-14 pl-14 pr-32 min-h-screen">
+                <div className="list flex-[7]  py-14 pl-16 pr-20 min-h-screen">
 
                     <div className='w-full h-60 '>
                         <img className='w-full h-full object-cover object-center' alt='' src='https://images.squarespace-cdn.com/content/v1/53b839afe4b07ea978436183/1608506169128-S6KYNEV61LEP5MS1UIH4/traditional-food-around-the-world-Travlinmad.jpg' />
@@ -150,7 +149,7 @@ const Main = () => {
                     <div className='mt-10'>
                         <p className='text-xl'>{sortedRestaurants.length} restaurants</p>
                     </div>
-                    <div className="cardGrid flex flex-wrap gap-x-32 gap-y-10 mt-5">
+                    <div className="cardGrid flex flex-wrap gap-x-52 gap-y-10 mt-5">
                         {sortedRestaurants.map(item =>
                             <Link key={item.id} to={{ pathname: `/restaurants/${item.id}`, state: { restaurant: item } }}>
                                 <RestaurantCard restaurant={item} />
