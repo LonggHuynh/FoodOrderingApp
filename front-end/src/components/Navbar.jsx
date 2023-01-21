@@ -53,7 +53,6 @@ const Navbar = () => {
             return data
         })
             .then((data) => toast.success(data.msg))
-
             .catch((error) => toast.error(error.message))
 
     }
@@ -158,7 +157,7 @@ const Navbar = () => {
                                         <>
                                             <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Login</div>
                                             <div className="p-4 border-1 border-b cursor-pointer" onClick={signup}>Signup</div>
-                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={loginWithDummy}>Login with dummy user</div>
+                                            <div className="p-4 border-1 border-b cursor-pointer" onClick={loginWithDummy}>Login as dummy user</div>
                                         </>
                                 }
 

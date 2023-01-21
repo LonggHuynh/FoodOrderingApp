@@ -44,8 +44,6 @@ const EditDish = ({ action, closeTab, dish, categories }) => {
             }).then(() => window.location.reload())
             .catch((error) => toast.error(error.message))
 
-        //Fetch!!
-
     }
 
 

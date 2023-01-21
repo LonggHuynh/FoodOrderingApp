@@ -12,7 +12,7 @@ const getOrdersOfUser = async (req, res, next) => {
                  JOIN restaurant on app_order.restaurant_id = restaurant.id
         WHERE app_order.uid = $1
         GROUP BY app_order.id, restaurant.id
-        ORDER BY app_order.date
+        ORDER BY app_order.date DESC
         `
 
     try {
