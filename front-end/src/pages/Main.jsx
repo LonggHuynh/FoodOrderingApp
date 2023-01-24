@@ -24,7 +24,7 @@ const Main = () => {
 
     useEffect(() => {
         setFilteredRestaurants(restaurants.filter(restaurant =>
-            (!isDeliveryFree || restaurant.delivery_cost === 0)
+            (!isDeliveryFree || Number(restaurant.delivery_cost) === 0)
             && (restaurant.min_order <= minOrder)
             && (restaurant.rating >= minRating)
             && restaurant.name.toUpperCase().includes(searchTerm.toUpperCase())))
