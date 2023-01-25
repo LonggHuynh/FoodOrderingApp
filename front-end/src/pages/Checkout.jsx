@@ -69,7 +69,8 @@ const Checkout = () => {
                 .then(() => setLoading(false))
                 .catch((error) => { toast.error(error.message); setLoading(false) })
         }
-    }, [loading, accessToken, dispatch, navigate])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading])
 
     const handleSubmit = (e) => {
         e.preventDefault()

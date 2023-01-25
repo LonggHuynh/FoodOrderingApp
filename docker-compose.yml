@@ -1,0 +1,15 @@
+version: '1.0'
+services:
+  back-end:
+    build: ./back-end
+    container_name: foodOrderingAppBack
+    ports:
+      - "5000:5000"
+
+  front-end:
+    build: ./front-end
+    container_name: foodOrderingAppFront
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front-end:/home/app

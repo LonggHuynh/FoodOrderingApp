@@ -118,10 +118,10 @@ const Navbar = () => {
 
             {editRestaurant && <EditRestaurantCard action='Create' closeTab={() => setEditRestaurant(false)} />}
 
-            <div className="logo flex items-center text-3xl font-bold">
+            <div className="logo flex items-center text-2xl font-semibold">
 
-                <Link to='/'>
-                    Logo
+                <Link to='/' >
+                    QuickBite
                 </Link>
             </div>
             <div className="cartAndMenu flex items-center gap-4">
@@ -164,9 +164,6 @@ const Navbar = () => {
                             </div>
                         )
                     }
-
-
-
                 </div>
 
             </div>

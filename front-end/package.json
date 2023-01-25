@@ -1,5 +1,5 @@
 {
-  "name": "restaurantapp",
+  "name": "food_delivery_front",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +13,6 @@
     "@testing-library/user-event": "^13.2.1",
     "dotenv": "^16.0.3",
     "firebase": "^9.6.10",
-    "framer-motion": "^6.2.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",

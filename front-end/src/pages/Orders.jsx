@@ -48,7 +48,7 @@ const Orders = () => {
             }).catch((error) => toast.error(error.message))
 
 
-    }, [value])
+    }, [value, accessToken])
 
 
 
@@ -63,7 +63,7 @@ const Orders = () => {
                     <p className='text-4xl'>Order History</p>
 
                     {
-                        orders.map(order => <OrderCard key={order.id} order={order} selectOrder={() => setSelectedOrder(order)} rerender={()=> setValue(prev=>!prev)} />)
+                        orders.map(order => <OrderCard key={order.id} order={order} selectOrder={() => setSelectedOrder(order)} rerender={() => setValue(prev => !prev)} />)
                     }
 
                 </div>
