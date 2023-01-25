@@ -5,6 +5,8 @@ services:
     container_name: foodOrderingAppBack
     ports:
       - "5000:5000"
+    volumes:
+      - ./front-end:/home/app
 
   front-end:
     build: ./front-end
