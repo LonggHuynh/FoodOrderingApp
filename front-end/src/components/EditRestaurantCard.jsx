@@ -6,6 +6,10 @@ import ImageInput from './ImageInput';
 import CloseIcon from '@mui/icons-material/Close';
 import url from '../config/api';
 import { toast } from 'react-toastify';
+import { useDispatch } from "react-redux"
+import { actionType } from '../redux/';
+
+
 
 const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
 
@@ -15,7 +19,7 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
     const [background, setBackground] = useState(restaurant?.background_url)
     const [logo, setLogo] = useState(restaurant?.logo_url)
 
-
+    const dispatch = useDispatch()
     const { accessToken } = useSelector(state => state.user)
 
 
@@ -39,7 +43,8 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
                     throw new Error(data.msg)
                 }
 
-            }).then(() => window.location.reload())
+            }).then(() => dispatch({ type: actionType.CREATE_RESTAURANT}))
+            .then(() => window.location.reload())
             .catch((error) => toast.error(error.message))
 
 
@@ -83,7 +88,7 @@ const EditRestaurantCard = ({ action, restaurant, closeTab }) => {
                             </div>
 
                             <div className='logoInput'>
-                                <p>Min order</p>
+                                <p>Delivery fee</p>
                                 <input type='number' onChange={handleChange} name='delivery_cost' value={data.delivery_cost} className='w-full border-b focus:outline-none mb-10' />
                             </div>
 

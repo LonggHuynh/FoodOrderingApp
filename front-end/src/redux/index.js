@@ -15,9 +15,8 @@ export const actionType = {
   REMOVE_FROM_CART: "REMOVE_FROM_CART",
   DECREASE_QUANTITY: "DECREASE_QUANTITY",
   INCREASE_QUANTITY: "INCREASE_QUANTITY",
-  SET_RESTAURANT: "SET_RESTAURANT"
-
-
+  SET_RESTAURANT: "SET_RESTAURANT",
+  CREATE_RESTAURANT: "CREATE_RESTAURANT"
 };
 
 
@@ -25,6 +24,8 @@ const userReducer = (state = null, action) => {
   switch (action.type) {
     case actionType.SET_USER:
       return action.payload
+    case actionType.CREATE_RESTAURANT:
+      return {...state, hasRestaurant:true}
     default:
       return state
   }

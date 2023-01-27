@@ -95,7 +95,7 @@ const Main = () => {
                         <p className='text-2xl mb-3 '>Rating</p>
 
                         {Array.from(Array(5).keys()).map((val) =>
-                            <div className='inputItem mb-2'>
+                            <div className='inputItem mb-2' key={val}>
                                 <input type='radio' id='10' value={val + 1} name='minRating' onChange={(e) => setMinRating(e.target.value)} />
                                 <label className='ml-2' htmlFor='10'> {val + 1}</label>
                             </div>

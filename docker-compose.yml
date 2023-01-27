@@ -1,4 +1,4 @@
-version: '1.0'
+version: '3'
 services:
   back-end:
     build: ./back-end
@@ -6,7 +6,12 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./front-end:/home/app
+      - ./back-end:/home/app
+    environment:
+      CONNECTIONSTRING: postgresql://user:${PG_PASSWORD}@db:5432
+      # - CREDS=//Your Firebase service account goes here 
+    depends_on:
+      - db
 
   front-end:
     build: ./front-end
@@ -15,3 +20,16 @@ services:
       - "3000:3000"
     volumes:
       - ./front-end:/home/app
+
+  db:
+    image: 'postgres'
+    container_name: foodOrderingAppDb
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - pgdata:/var/lib/postgresql/data
+      
+volumes:
+  pgdata:

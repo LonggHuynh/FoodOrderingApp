@@ -57,6 +57,8 @@ const Navbar = () => {
 
     }
 
+    
+
 
     const signup = async () => {
         const { user } = await signInWithPopup(firebaseAuth, provider)
@@ -95,7 +97,7 @@ const Navbar = () => {
             return data
 
         }).then(data => {
-
+            console.log(data)
             dispatch({ type: actionType.SET_USER, payload: { uid, email, displayName, accessToken, hasRestaurant: data.data.restaurant_id !== null } })
             return data
         })
