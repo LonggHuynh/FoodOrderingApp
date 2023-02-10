@@ -15,7 +15,6 @@ HTML/CSS/TailwindCSS
 
 # Run locally
 ## Front end 
- 
 ```
 cd front-end
 npm ci
@@ -54,8 +53,9 @@ Alternatively you can use Docker to run the application.
 
 To start, use
 ```
-docker compose up
+docker compose up.
 ```
+Then view the web application at http:://localhost::3000.
 ### Enviroment variables.
 | Variable Name           | Description                                                                                                 |
 |-------------------------|-------------------------------------------------------------------------------------------------------------|
