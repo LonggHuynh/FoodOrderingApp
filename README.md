@@ -50,17 +50,19 @@ Be aware that you need to enable your traffic in the Security Settings of your G
 ## Using Docker
 Alternatively you can use Docker to run the application.
 
+### Enviroment variables.
+| Variable Name           | Description                                                                                                 |
+|-------------------------|-------------------------------------------------------------------------------------------------------------|
+| PG_PASSWORD            | Password of for the PostgresSQL server |
+| CREDS                     | Service account of Firebase server. |
+
 
 To start, use
 ```
 docker compose up.
 ```
 Then view the web application at http:://localhost::3000.
-### Enviroment variables.
-| Variable Name           | Description                                                                                                 |
-|-------------------------|-------------------------------------------------------------------------------------------------------------|
-| PG_PASSWORD            | Password of for the PostgresSQL server |
-| CREDS            | Service account of Firebase server. |
+
 
 To clean up after using, use
 
