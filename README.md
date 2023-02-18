@@ -19,7 +19,7 @@ cd front-end
 npm ci
 npm start
 ```
-### Enviroment variables.
+### Enviroment variables
 
 | Variable Name           | Description                                                                                                 |
 |-------------------------|-------------------------------------------------------------------------------------------------------------|

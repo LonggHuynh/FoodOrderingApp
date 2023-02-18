@@ -7,6 +7,7 @@ services:
       - "5000:5000"
     volumes:
       - ./back-end:/home/app
+      - /home/app/node_modules
     environment:
       CONNECTIONSTRING: postgresql://user:${PG_PASSWORD}@db:5432
       # - CREDS=//Your Firebase service account goes here 
@@ -20,6 +21,7 @@ services:
       - "3000:3000"
     volumes:
       - ./front-end:/home/app
+      - /home/app/node_modules
 
   db:
     image: 'postgres'
