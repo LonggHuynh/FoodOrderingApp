@@ -119,7 +119,7 @@ const Main = () => {
                 <div className="list flex-[7]  py-14 pl-16 pr-20 min-h-screen">
 
                     <div className='w-full h-60 '>
-                        <img className='w-full h-full object-cover object-center' alt='' src='https://images.squarespace-cdn.com/content/v1/53b839afe4b07ea978436183/1608506169128-S6KYNEV61LEP5MS1UIH4/traditional-food-around-the-world-Travlinmad.jpg' />
+                        <img className='w-full h-full object-cover object-center' alt='' src='https://img.freepik.com/free-photo/flat-lay-batch-cooking-composition_23-2148765597.jpg' />
                     </div>
                     <div className="searchAndSort flex gap-10 mt-20">
                         <div className='searchBar border-2 rounded px-4 py-2 flex gap-3 items-center flex-[2]'>
